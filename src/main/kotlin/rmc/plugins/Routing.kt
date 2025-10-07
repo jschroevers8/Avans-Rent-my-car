@@ -1,4 +1,4 @@
-package rmc
+package rmc.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*
