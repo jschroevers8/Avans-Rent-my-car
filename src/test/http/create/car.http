@@ -1,0 +1,7 @@
+POST http://localhost:8080/car/create
+Content-Type: application/json
+
+{
+  "licensePlate": "ABC1234",
+  "brand": "Toyota"
+}
