@@ -5,6 +5,12 @@ import rmc.presentation.dto.car.CarResponse
 
 fun CarEntity.toResponse() = CarResponse(
     id = id,
-    licensePlate = licensePlate,
+    fuelType = fuelType,
+    userId = userId,
+    bodyType = bodyType,
     brand = brand,
+    modelYear = modelYear,
+    licensePlate = licensePlate,
+    mileage = mileage,
+    createdStamp = createdStamp,
 )
