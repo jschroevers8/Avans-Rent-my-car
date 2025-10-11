@@ -13,7 +13,7 @@ class UserRepository(
     private val addressRepository: AddressRepositoryInterface
 ) : UserRepositoryInterface {
 
-    override suspend fun findById(id: Int): UserEntity? = transaction {
+    override fun findById(id: Int): UserEntity? = transaction {
         UserTable.selectAll().where { UserTable.id eq id }
             .map { it.toUserEntity(addressRepository) }.singleOrNull()
     }
@@ -24,7 +24,7 @@ class UserRepository(
             .singleOrNull()
     }
 
-    override suspend fun save(user: UserEntity): UserEntity = transaction {
+    override fun save(user: UserEntity): UserEntity = transaction {
         val addressId = user.address.let { addressRepository.save(it).id!! }
 
         val id = UserTable.insert {

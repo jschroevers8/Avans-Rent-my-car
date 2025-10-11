@@ -23,11 +23,10 @@ fun Route.carRoutes(carController: CarController) {
 
     route("/car/create") {
         post {
-//            val userId = call.parameters["userId"]?.toIntOrNull()
-//                ?: return@post call.respond(HttpStatusCode.BadRequest, "Invalid userId")
-
             val request = call.receive<CreateCar>()
+
             val car = carController.createCar(request)
+
             call.respond(HttpStatusCode.Created, car)
         }
     }
