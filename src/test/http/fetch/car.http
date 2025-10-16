@@ -1,7 +1,3 @@
-### Get all car
-GET http://localhost:8080/car/all
-Content-Type: application/json
-
 ### Get car by ID
-GET http://localhost:8080/car/1
+GET http://localhost:8080/car/show/1
 Accept: application/json
