@@ -11,23 +11,25 @@ import rmc.presentation.controllers.UserController
 import rmc.presentation.dto.user.CreateUser
 
 fun Route.userRoutes(userController: UserController) {
+    route("/login") {
+        get("/{id}") {
+            val id =
+                call.parameters["id"]?.toIntOrNull()
+                    ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid user ID")
 
-    route("/users") {
+            val user =
+                userController.getUser(id)
+                    ?: return@get call.respond(HttpStatusCode.NotFound, "User not found")
 
+            call.respond(HttpStatusCode.OK, user)
+        }
+    }
+
+    route("/signup") {
         post {
             val request = call.receive<CreateUser>()
             val created = userController.createUser(request)
             call.respond(HttpStatusCode.Created, created)
-        }
-
-        get("/{id}") {
-            val id = call.parameters["id"]?.toIntOrNull()
-                ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid user ID")
-
-            val user = userController.getUser(id)
-                ?: return@get call.respond(HttpStatusCode.NotFound, "User not found")
-
-            call.respond(HttpStatusCode.OK, user)
         }
     }
 }

@@ -1,10 +1,8 @@
 package rmc.domain.entities
 
 import kotlinx.datetime.LocalDateTime
-import org.jetbrains.exposed.sql.Column
 
-
-data class CarEntity (
+data class CarEntity(
     val id: Int? = null,
     val fuelType: FuelType,
     val userId: Int,

@@ -13,5 +13,5 @@ data class CreateUser(
     val firstName: String,
     val lastName: String,
     val phone: String,
-    val userPoints: Int
+    val userPoints: Int,
 )

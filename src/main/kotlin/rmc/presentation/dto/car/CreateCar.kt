@@ -4,11 +4,9 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 import rmc.domain.entities.BodyType
 import rmc.domain.entities.FuelType
-import rmc.presentation.dto.user.CreateUser
-import rmc.presentation.dto.user.UserResponse
 
 @Serializable
-data class CreateCar (
+data class CreateCar(
     val fuelType: FuelType,
     val userId: Int,
     val bodyType: BodyType,

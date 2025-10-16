@@ -11,27 +11,38 @@ import rmc.presentation.controllers.CarController
 import rmc.presentation.dto.car.CreateCar
 
 fun Route.carRoutes(carController: CarController) {
-
-    route("/cars") {
-        get {
+    route("/car") {
+        get("/all") {
             val cars = carController.getAllCars()
 
             call.respond(HttpStatusCode.OK, cars)
         }
-    }
 
-
-    route("/car/create") {
-        post {
+        post("/create") {
             val request = call.receive<CreateCar>()
 
             val car = carController.createCar(request)
 
             call.respond(HttpStatusCode.Created, car)
         }
+
+        get("/{id}") {
+            val carId = call.parameters["id"]?.toIntOrNull()
+
+            if (carId == null) {
+                call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
+                return@get
+            }
+
+            val car = carController.findCarById(carId)
+            if (car == null) {
+                call.respond(HttpStatusCode.NotFound, "Car with id $carId not found")
+                return@get
+            }
+
+            call.respond(HttpStatusCode.OK, car)
+        }
     }
-
-
 
 /*    route("/users/{userId}/cars") {
 

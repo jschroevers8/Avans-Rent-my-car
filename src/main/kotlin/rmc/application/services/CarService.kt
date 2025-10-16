@@ -1,18 +1,18 @@
 package rmc.application.services
 
-import org.jetbrains.exposed.sql.Column
 import rmc.application.exceptions.NotFoundException
 import rmc.domain.entities.CarEntity
 import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
 import rmc.presentation.dto.car.CreateCar
 
-class CarService (
+class CarService(
     private val carRepository: CarRepositoryInterface,
     private val userRepository: UserRepositoryInterface,
 ) {
     suspend fun getAllCars(): List<CarEntity> = carRepository.getAll()
 
+    suspend fun findCarById(carId: Int): CarEntity? = carRepository.findById(carId)
 
     suspend fun create(carRequest: CreateCar): CarEntity {
         if (userRepository.findById(carRequest.userId) == null) {
@@ -23,16 +23,17 @@ class CarService (
             throw NotFoundException("Car with this license plate already exists")
         }
 
-        val car = CarEntity(
-            fuelType = carRequest.fuelType,
-            userId = carRequest.userId,
-            bodyType = carRequest.bodyType,
-            brand = carRequest.brand,
-            modelYear = carRequest.modelYear,
-            licensePlate = carRequest.licensePlate,
-            mileage = carRequest.mileage,
-            createdStamp = carRequest.createdStamp,
-        )
+        val car =
+            CarEntity(
+                fuelType = carRequest.fuelType,
+                userId = carRequest.userId,
+                bodyType = carRequest.bodyType,
+                brand = carRequest.brand,
+                modelYear = carRequest.modelYear,
+                licensePlate = carRequest.licensePlate,
+                mileage = carRequest.mileage,
+                createdStamp = carRequest.createdStamp,
+            )
 
         return carRepository.save(car)
     }
