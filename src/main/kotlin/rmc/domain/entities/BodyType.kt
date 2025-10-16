@@ -7,5 +7,5 @@ enum class BodyType {
     COUPE,
     CONVERTIBLE,
     VAN,
-    PICKUP
+    PICKUP,
 }

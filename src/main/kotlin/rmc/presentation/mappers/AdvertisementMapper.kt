@@ -3,11 +3,12 @@ package rmc.presentation.mappers
 import rmc.domain.entities.AdvertisementEntity
 import rmc.presentation.dto.advertisement.AdvertisementResponse
 
-fun AdvertisementEntity.toResponse() = AdvertisementResponse(
-    id = id,
-    carId = carId,
-    address = address.toResponse(),
-    pickUpDate = pickUpDate,
-    returningDate = returningDate,
-    price = price,
-)
+fun AdvertisementEntity.toResponse() =
+    AdvertisementResponse(
+        id = id,
+        carId = carId,
+        address = address.toResponse(),
+        pickUpDate = pickUpDate,
+        returningDate = returningDate,
+        price = price,
+    )

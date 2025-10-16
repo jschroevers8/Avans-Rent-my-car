@@ -2,7 +2,7 @@ package rmc.domain.entities
 
 import kotlinx.datetime.LocalDateTime
 
-data class AdvertisementEntity (
+data class AdvertisementEntity(
     val id: Int? = null,
     val carId: Int,
     val address: AddressEntity,

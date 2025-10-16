@@ -4,7 +4,6 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 import rmc.domain.entities.BodyType
 import rmc.domain.entities.FuelType
-import rmc.presentation.dto.user.UserResponse
 
 @Serializable
 data class CarResponse(

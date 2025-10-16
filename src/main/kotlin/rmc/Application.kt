@@ -1,9 +1,9 @@
 package rmc
 
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.routing.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -31,7 +31,6 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-
     install(ContentNegotiation) {
         json()
     }
@@ -40,7 +39,7 @@ fun Application.module() {
         url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;",
         driver = "org.h2.Driver",
         user = "root",
-        password = ""
+        password = "",
     )
 
     transaction {
@@ -49,7 +48,7 @@ fun Application.module() {
             AddressTable,
             UserTable,
             AdvertisementTable,
-            )
+        )
     }
 
     val addressRepository = AddressRepository()

@@ -1,0 +1,7 @@
+### Get all advertisements
+GET http://localhost:8080/advertisement/all
+Content-Type: application/json
+
+### Get advertisement by ID
+GET http://localhost:8080/advertisement/1
+Accept: application/json

@@ -1,5 +1,5 @@
 ### Create a new user with address
-POST http://localhost:8080/users
+POST http://localhost:8080/signup
 Content-Type: application/json
 
 {
@@ -19,6 +19,3 @@ Content-Type: application/json
   }
 }
 
-### Get user by ID
-GET http://localhost:8080/users/1
-Accept: application/json
