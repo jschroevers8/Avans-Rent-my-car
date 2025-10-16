@@ -1,4 +1,4 @@
-package rmc.application.services
+package rmc.application.usecases.user
 
 import rmc.application.exceptions.NotFoundException
 import rmc.domain.entities.AddressEntity
@@ -6,10 +6,10 @@ import rmc.domain.entities.UserEntity
 import rmc.domain.repositories.UserRepositoryInterface
 import rmc.presentation.dto.user.CreateUser
 
-class UserService(
+class SignupUsecase(
     private val userRepository: UserRepositoryInterface,
 ) {
-    suspend fun createUser(userRequest: CreateUser): UserEntity {
+    suspend fun invoke(userRequest: CreateUser): UserEntity {
         if (userRepository.findByEmail(userRequest.email) != null) {
             throw NotFoundException("User with this email already exists")
         }
@@ -37,6 +37,4 @@ class UserService(
 
         return userRepository.save(user)
     }
-
-    suspend fun getUser(id: Int): UserEntity? = userRepository.findById(id)
 }

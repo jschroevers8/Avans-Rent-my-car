@@ -1,4 +1,4 @@
-package rmc.application.services
+package rmc.application.usecases.advertisement
 
 import rmc.application.exceptions.NotFoundException
 import rmc.domain.entities.AddressEntity
@@ -7,15 +7,11 @@ import rmc.domain.repositories.AdvertisementRepositoryInterface
 import rmc.domain.repositories.CarRepositoryInterface
 import rmc.presentation.dto.advertisement.CreateAdvertisement
 
-class AdvertisementService(
+class CreateAdvertisementUsecase(
     private val carRepository: CarRepositoryInterface,
     private val advertisementRepository: AdvertisementRepositoryInterface,
 ) {
-    fun getAllAdvertisements(): List<AdvertisementEntity> = advertisementRepository.getAll()
-
-    fun findAdvertisementById(advertisementId: Int): AdvertisementEntity? = advertisementRepository.findById(advertisementId)
-
-    fun create(advertisementRequest: CreateAdvertisement): AdvertisementEntity {
+    fun invoke(advertisementRequest: CreateAdvertisement): AdvertisementEntity {
         if (carRepository.findById(advertisementRequest.carId) == null) {
             throw NotFoundException("Car not found")
         }

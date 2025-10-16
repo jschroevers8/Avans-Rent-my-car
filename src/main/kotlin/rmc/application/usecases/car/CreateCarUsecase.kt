@@ -1,4 +1,4 @@
-package rmc.application.services
+package rmc.application.usecases.car
 
 import rmc.application.exceptions.NotFoundException
 import rmc.domain.entities.CarEntity
@@ -6,15 +6,11 @@ import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
 import rmc.presentation.dto.car.CreateCar
 
-class CarService(
+class CreateCarUsecase(
     private val carRepository: CarRepositoryInterface,
     private val userRepository: UserRepositoryInterface,
 ) {
-    suspend fun getAllCars(): List<CarEntity> = carRepository.getAll()
-
-    suspend fun findCarById(carId: Int): CarEntity? = carRepository.findById(carId)
-
-    suspend fun create(carRequest: CreateCar): CarEntity {
+    suspend fun invoke(carRequest: CreateCar): CarEntity {
         if (userRepository.findById(carRequest.userId) == null) {
             throw NotFoundException("User not found")
         }
