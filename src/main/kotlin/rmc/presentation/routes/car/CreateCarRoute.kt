@@ -21,4 +21,3 @@ fun Route.createCarRoute(createCarUsecase: CreateCarUsecase) {
         }
     }
 }
-

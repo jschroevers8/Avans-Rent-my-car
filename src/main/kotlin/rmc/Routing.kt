@@ -25,7 +25,6 @@ import rmc.presentation.routes.car.getCarRoute
 import rmc.presentation.routes.user.userLoginRoute
 import rmc.presentation.routes.user.userSignupRoute
 
-
 fun Application.configureRouting() {
     val addressRepository: AddressRepositoryInterface = AddressRepository()
     val userRepository: UserRepositoryInterface = UserRepository(addressRepository)
