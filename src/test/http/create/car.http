@@ -10,5 +10,13 @@ Content-Type: application/json
   "modelYear": "2022",
   "licensePlate": "KTR-123-B",
   "mileage": "34000",
-  "createdStamp": "2020-08-30T18:43"
+  "createdStamp": "2020-08-30T18:43",
+  "carImages": [
+    {
+      "image": "base64EncodedImageStringHere"
+    },
+    {
+      "image": "anotherBase64EncodedImageStringHere"
+    }
+  ]
 }

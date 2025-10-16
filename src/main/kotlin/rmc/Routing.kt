@@ -11,10 +11,12 @@ import rmc.application.usecases.user.LoginUsecase
 import rmc.application.usecases.user.SignupUsecase
 import rmc.domain.repositories.AddressRepositoryInterface
 import rmc.domain.repositories.AdvertisementRepositoryInterface
+import rmc.domain.repositories.CarImageRepositoryInterface
 import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
 import rmc.infrastructure.repositories.AddressRepository
 import rmc.infrastructure.repositories.AdvertisementRepository
+import rmc.infrastructure.repositories.CarImageRepository
 import rmc.infrastructure.repositories.CarRepository
 import rmc.infrastructure.repositories.UserRepository
 import rmc.presentation.routes.advertisement.createAdvertisementRoute
@@ -30,11 +32,12 @@ fun Application.configureRouting() {
     val userRepository: UserRepositoryInterface = UserRepository(addressRepository)
     val carRepository: CarRepositoryInterface = CarRepository(userRepository)
     val advertisementRepository: AdvertisementRepositoryInterface = AdvertisementRepository(addressRepository)
+    val carImageRepository: CarImageRepositoryInterface = CarImageRepository()
 
     val userLoginUsecase = LoginUsecase(userRepository)
     val userSignupUsecase = SignupUsecase(userRepository)
-    val createCarUsecase = CreateCarUsecase(carRepository, userRepository)
-    val getCarUsecase = GetCarUsecase(carRepository)
+    val createCarUsecase = CreateCarUsecase(carRepository, userRepository, carImageRepository)
+    val getCarUsecase = GetCarUsecase(carRepository, carImageRepository)
     val createAdvertisementUsecase = CreateAdvertisementUsecase(carRepository, advertisementRepository)
     val getAdvertisementUsecase = GetAdvertisementUsecase(advertisementRepository)
     val getAvailableAdvertisementsUsecase = GetAvailableAdvertisementsUsecase(advertisementRepository)
