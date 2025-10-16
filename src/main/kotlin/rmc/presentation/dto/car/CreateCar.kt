@@ -4,6 +4,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 import rmc.domain.entities.BodyType
 import rmc.domain.entities.FuelType
+import rmc.presentation.dto.image.CreateCarImage
 
 @Serializable
 data class CreateCar(
@@ -15,4 +16,5 @@ data class CreateCar(
     val licensePlate: String,
     val mileage: String,
     val createdStamp: LocalDateTime,
+    val carImages: List<CreateCarImage> = emptyList(),
 )

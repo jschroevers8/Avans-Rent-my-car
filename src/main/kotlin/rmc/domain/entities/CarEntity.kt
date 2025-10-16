@@ -12,4 +12,9 @@ data class CarEntity(
     val licensePlate: String,
     val mileage: String,
     val createdStamp: LocalDateTime,
-)
+    var carImages: List<CarImageEntity> = emptyList(),
+) {
+    fun setImages(carImages: List<CarImageEntity>) {
+        this.carImages = carImages
+    }
+}

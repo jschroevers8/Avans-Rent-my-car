@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import rmc.infrastructure.tables.AddressTable
 import rmc.infrastructure.tables.AdvertisementTable
+import rmc.infrastructure.tables.CarImageTable
 import rmc.infrastructure.tables.CarTable
 import rmc.infrastructure.tables.UserTable
 
@@ -34,6 +35,7 @@ fun Application.module() {
             AddressTable,
             UserTable,
             AdvertisementTable,
+            CarImageTable,
         )
     }
 

@@ -14,4 +14,5 @@ fun CarEntity.toResponse() =
         licensePlate = licensePlate,
         mileage = mileage,
         createdStamp = createdStamp,
+        carImages = carImages.map { it.toResponse() },
     )
