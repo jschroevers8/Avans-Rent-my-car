@@ -1,6 +1,7 @@
 ### Create a new car
 POST http://localhost:8080/car/create
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjA4ODIxNDN9.I8WPu0-QeO-nlnBBtZQULiaXZKHLZrHiSCSlI1oEAuU
 
 {
   "fuelType": "ICE",

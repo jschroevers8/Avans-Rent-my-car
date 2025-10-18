@@ -18,7 +18,7 @@ class UserRepository(
                 .map { it.toUserEntity(addressRepository) }.singleOrNull()
         }
 
-    override suspend fun findByEmail(email: String): UserEntity? =
+    override fun findByEmail(email: String): UserEntity? =
         transaction {
             UserTable.selectAll().where { UserTable.email eq email }
                 .map { it.toUserEntity(addressRepository) }

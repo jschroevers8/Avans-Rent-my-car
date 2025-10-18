@@ -1,6 +1,7 @@
 package rmc.presentation.routes.rental
 
 import io.ktor.http.*
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -9,13 +10,15 @@ import rmc.presentation.dto.rental.RentAdvertisement
 import rmc.presentation.mappers.toResponse
 
 fun Route.rentAdvertisementRoute(rentAdvertisementUsecase: RentAdvertisementUsecase) {
-    route("/rent") {
-        post("/advertisement") {
-            val request = call.receive<RentAdvertisement>()
+    authenticate("myAuth") {
+        route("/rent") {
+            post("/advertisement") {
+                val request = call.receive<RentAdvertisement>()
 
-            val rental = rentAdvertisementUsecase.invoke(request)
+                val rental = rentAdvertisementUsecase.invoke(request)
 
-            call.respond(HttpStatusCode.Created, rental.toResponse())
+                call.respond(HttpStatusCode.Created, rental.toResponse())
+            }
         }
     }
 }

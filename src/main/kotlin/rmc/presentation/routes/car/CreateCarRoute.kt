@@ -1,6 +1,7 @@
 package rmc.presentation.routes.car
 
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -11,13 +12,15 @@ import rmc.presentation.dto.car.CreateCar
 import rmc.presentation.mappers.toResponse
 
 fun Route.createCarRoute(createCarUsecase: CreateCarUsecase) {
-    route("/car") {
-        post("/create") {
-            val request = call.receive<CreateCar>()
+    authenticate("myAuth") {
+        route("/car") {
+            post("/create") {
+                val request = call.receive<CreateCar>()
 
-            val car = createCarUsecase.invoke(request)
+                val car = createCarUsecase.invoke(request)
 
-            call.respond(HttpStatusCode.Created, car.toResponse())
+                call.respond(HttpStatusCode.Created, car.toResponse())
+            }
         }
     }
 }
