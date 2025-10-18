@@ -10,5 +10,5 @@ object AdvertisementTable : Table() {
     val pickUpDate = datetime("pick_up_date")
     val returningDate = datetime("returning_date")
     val price = double("price")
-    override val primaryKey = PrimaryKey(UserTable.id)
+    override val primaryKey = PrimaryKey(id)
 }

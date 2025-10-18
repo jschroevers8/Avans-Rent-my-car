@@ -7,23 +7,31 @@ import rmc.application.usecases.advertisement.GetAdvertisementUsecase
 import rmc.application.usecases.advertisement.GetAvailableAdvertisementsUsecase
 import rmc.application.usecases.car.CreateCarUsecase
 import rmc.application.usecases.car.GetCarUsecase
+import rmc.application.usecases.rental.RentAdvertisementUsecase
+import rmc.application.usecases.rentaltrip.RegisterRentalTripUsecase
 import rmc.application.usecases.user.LoginUsecase
 import rmc.application.usecases.user.SignupUsecase
 import rmc.domain.repositories.AddressRepositoryInterface
 import rmc.domain.repositories.AdvertisementRepositoryInterface
 import rmc.domain.repositories.CarImageRepositoryInterface
 import rmc.domain.repositories.CarRepositoryInterface
+import rmc.domain.repositories.RentalRepositoryInterface
+import rmc.domain.repositories.RentalTripRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
 import rmc.infrastructure.repositories.AddressRepository
 import rmc.infrastructure.repositories.AdvertisementRepository
 import rmc.infrastructure.repositories.CarImageRepository
 import rmc.infrastructure.repositories.CarRepository
+import rmc.infrastructure.repositories.RentalRepository
+import rmc.infrastructure.repositories.RentalTripRepository
 import rmc.infrastructure.repositories.UserRepository
 import rmc.presentation.routes.advertisement.createAdvertisementRoute
 import rmc.presentation.routes.advertisement.getAdvertisementRoute
 import rmc.presentation.routes.advertisement.getAvailableAdvertisementsRoute
 import rmc.presentation.routes.car.createCarRoute
 import rmc.presentation.routes.car.getCarRoute
+import rmc.presentation.routes.rental.rentAdvertisementRoute
+import rmc.presentation.routes.rentaltrip.registerRentalTripRoute
 import rmc.presentation.routes.user.userLoginRoute
 import rmc.presentation.routes.user.userSignupRoute
 
@@ -33,6 +41,8 @@ fun Application.configureRouting() {
     val carRepository: CarRepositoryInterface = CarRepository(userRepository)
     val advertisementRepository: AdvertisementRepositoryInterface = AdvertisementRepository(addressRepository)
     val carImageRepository: CarImageRepositoryInterface = CarImageRepository()
+    val rentalRepository: RentalRepositoryInterface = RentalRepository()
+    val rentalTripRepository: RentalTripRepositoryInterface = RentalTripRepository()
 
     val userLoginUsecase = LoginUsecase(userRepository)
     val userSignupUsecase = SignupUsecase(userRepository)
@@ -41,6 +51,8 @@ fun Application.configureRouting() {
     val createAdvertisementUsecase = CreateAdvertisementUsecase(carRepository, advertisementRepository)
     val getAdvertisementUsecase = GetAdvertisementUsecase(advertisementRepository)
     val getAvailableAdvertisementsUsecase = GetAvailableAdvertisementsUsecase(advertisementRepository)
+    val rentAdvertisementUsecase = RentAdvertisementUsecase(rentalRepository, userRepository, advertisementRepository)
+    val registerRentalTripUsecase = RegisterRentalTripUsecase(rentalTripRepository, rentalRepository)
 
     routing {
         userLoginRoute(userLoginUsecase)
@@ -50,5 +62,7 @@ fun Application.configureRouting() {
         createAdvertisementRoute(createAdvertisementUsecase)
         getAdvertisementRoute(getAdvertisementUsecase)
         getAvailableAdvertisementsRoute(getAvailableAdvertisementsUsecase)
+        rentAdvertisementRoute(rentAdvertisementUsecase)
+        registerRentalTripRoute(registerRentalTripUsecase)
     }
 }

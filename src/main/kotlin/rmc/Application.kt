@@ -11,6 +11,8 @@ import rmc.infrastructure.tables.AddressTable
 import rmc.infrastructure.tables.AdvertisementTable
 import rmc.infrastructure.tables.CarImageTable
 import rmc.infrastructure.tables.CarTable
+import rmc.infrastructure.tables.RentalTable
+import rmc.infrastructure.tables.RentalTripTable
 import rmc.infrastructure.tables.UserTable
 
 fun main(args: Array<String>) {
@@ -30,12 +32,14 @@ fun Application.module() {
     )
 
     transaction {
-        SchemaUtils.create(
+        SchemaUtils.createMissingTablesAndColumns(
             CarTable,
             AddressTable,
             UserTable,
             AdvertisementTable,
             CarImageTable,
+            RentalTable,
+            RentalTripTable,
         )
     }
 
