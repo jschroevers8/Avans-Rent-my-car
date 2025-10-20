@@ -1,7 +1,8 @@
-package rmc
+package rmc.infrastructure.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.routing
+import rmc.application.auth.Authenticator
 import rmc.application.usecases.advertisement.CreateAdvertisementUsecase
 import rmc.application.usecases.advertisement.GetAdvertisementUsecase
 import rmc.application.usecases.advertisement.GetAvailableAdvertisementsUsecase
@@ -18,6 +19,7 @@ import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.RentalRepositoryInterface
 import rmc.domain.repositories.RentalTripRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
+import rmc.infrastructure.auth.JwtTokenGenerator
 import rmc.infrastructure.repositories.AddressRepository
 import rmc.infrastructure.repositories.AdvertisementRepository
 import rmc.infrastructure.repositories.CarImageRepository
@@ -54,8 +56,15 @@ fun Application.configureRouting() {
     val rentAdvertisementUsecase = RentAdvertisementUsecase(rentalRepository, userRepository, advertisementRepository)
     val registerRentalTripUsecase = RegisterRentalTripUsecase(rentalTripRepository, rentalRepository)
 
+    val jwtSecret = environment.config.property("jwt.secret").getString()
+    val jwtAudience = environment.config.property("jwt.audience").getString()
+    val jwtDomain = environment.config.property("jwt.domain").getString()
+
+    val tokenGenerator = JwtTokenGenerator(jwtSecret, jwtAudience, jwtDomain)
+    val authenticator = Authenticator(tokenGenerator)
+
     routing {
-        userLoginRoute(userLoginUsecase)
+        userLoginRoute(userLoginUsecase, authenticator)
         userSignupRoute(userSignupUsecase)
         createCarRoute(createCarUsecase)
         getCarRoute(getCarUsecase)
