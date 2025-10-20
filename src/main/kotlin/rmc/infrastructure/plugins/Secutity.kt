@@ -22,7 +22,8 @@ fun Application.configureSecurity() {
                     .require(Algorithm.HMAC256(jwtSecret))
                     .withAudience(jwtAudience)
                     .withIssuer(jwtDomain)
-                    .build())
+                    .build(),
+            )
             validate { credential ->
                 if (credential.payload.getClaim("username").asString() != "") {
                     JWTPrincipal(credential.payload)

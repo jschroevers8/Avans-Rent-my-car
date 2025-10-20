@@ -8,7 +8,7 @@ plugins {
 group = "rmc"
 version = "0.0.1"
 val exposedVersion = "0.51.1"
-val ktor_version = "3.3.1"
+val ktorVersion = "3.3.1"
 
 application {
     mainClass = "io.ktor.server.netty.EngineMain"
@@ -22,9 +22,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
-    implementation("io.ktor:ktor-server-auth:$ktor_version")
-    implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("com.h2database:h2:2.3.232")
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)

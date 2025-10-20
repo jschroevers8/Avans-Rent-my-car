@@ -13,7 +13,7 @@ import rmc.presentation.dto.user.LoginRequestDTO
 
 fun Route.userLoginRoute(
     loginUsecase: LoginUsecase,
-    authenticator: Authenticator
+    authenticator: Authenticator,
 ) {
     post("/login") {
         val request = call.receive<LoginRequestDTO>()
@@ -23,16 +23,15 @@ fun Route.userLoginRoute(
             val token = authenticator.generateToken(user)
             call.respondText(
                 Json.encodeToString(hashMapOf("token" to token)),
-                ContentType.Application.Json
+                ContentType.Application.Json,
             )
         } else {
             call.response.status(HttpStatusCode.Unauthorized)
             call.respondText(
                 Json.encodeToString(hashMapOf("error" to "Wrong login or password")),
-                ContentType.Application.Json
+                ContentType.Application.Json,
             )
         }
-
 
 //        val email = parameters.email.toString()
 //        val password = parameters.password.toString()

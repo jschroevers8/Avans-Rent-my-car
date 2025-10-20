@@ -1,12 +1,7 @@
 package rmc
 
-import com.auth0.jwt.JWT
-import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.Authentication
-import io.ktor.server.auth.jwt.JWTPrincipal
-import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import org.jetbrains.exposed.sql.Database
