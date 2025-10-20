@@ -50,6 +50,6 @@ fun Application.module() {
         )
     }
 
-    configureRouting()
     configureSecurity()
+    configureRouting()
 }
