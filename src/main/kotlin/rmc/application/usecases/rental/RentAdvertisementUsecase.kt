@@ -26,7 +26,8 @@ class RentAdvertisementUsecase(
                 userId = request.userId,
                 advertisementId = request.advertisementId,
                 rentalStatus = request.rentalStatus,
-                createdStamp = request.createdStamp,
+                pickUpDate = request.pickUpDate,
+                returningDate = request.returningDate,
             )
 
         return rentalRepository.save(rental)

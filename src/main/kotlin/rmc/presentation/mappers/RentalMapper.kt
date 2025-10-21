@@ -9,5 +9,7 @@ fun RentalEntity.toResponse() =
         userId = userId,
         advertisementId = advertisementId,
         rentalStatus = rentalStatus,
-        createdStamp = createdStamp,
+        pickUpDate = pickUpDate,
+        returningDate = returningDate,
+        rentalTrips = rentalTrips.map { it.toResponse() },
     )

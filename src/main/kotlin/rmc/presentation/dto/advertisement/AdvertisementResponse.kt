@@ -9,7 +9,7 @@ data class AdvertisementResponse(
     val id: Int? = null,
     val carId: Int,
     val address: AddressResponse,
-    val pickUpDate: LocalDateTime,
-    val returningDate: LocalDateTime,
+    val availableFrom: LocalDateTime,
+    val availableUntil: LocalDateTime,
     val price: Double,
 )

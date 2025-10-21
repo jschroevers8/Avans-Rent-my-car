@@ -11,6 +11,7 @@ object CarTable : Table() {
     val userId = integer("user_id").references(UserTable.id)
     val bodyType = enumerationByName("body_type", 20, BodyType::class)
     val brand = varchar("brand", 50)
+    val model = varchar("model", 50)
     val modelYear = varchar("model_year", 50)
     val licensePlate = varchar("license_plate", 20).uniqueIndex()
     val mileage = varchar("mileage", 50)

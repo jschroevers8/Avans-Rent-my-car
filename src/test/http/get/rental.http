@@ -1,4 +1,4 @@
-### Delete car
-DELETE http://localhost:8080/car/delete/5
+### Get rental by ID
+GET http://localhost:8080/rental/show/1
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjExNDcyNzF9.yxv45vaZq3UGkwSHy8HEXCKhfkexAt4z3Eaw-koU3hw

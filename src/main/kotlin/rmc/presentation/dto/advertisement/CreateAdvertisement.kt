@@ -8,7 +8,7 @@ import rmc.presentation.dto.address.CreateAddress
 data class CreateAdvertisement(
     val carId: Int,
     val address: CreateAddress,
-    val pickUpDate: LocalDateTime,
-    val returningDate: LocalDateTime,
+    val availableFrom: LocalDateTime,
+    val availableUntil: LocalDateTime,
     val price: Double,
 )

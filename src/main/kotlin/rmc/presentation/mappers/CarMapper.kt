@@ -10,6 +10,7 @@ fun CarEntity.toResponse() =
         userId = userId,
         bodyType = bodyType,
         brand = brand,
+        model = model,
         modelYear = modelYear,
         licensePlate = licensePlate,
         mileage = mileage,

@@ -9,7 +9,8 @@ object RentalTable : Table() {
     val userId = integer("user_id").references(UserTable.id)
     val advertisementId = integer("advertisement_id").references(AdvertisementTable.id)
     val rentalStatus = enumerationByName("rental_status", 20, RentalStatus::class)
-    val createdStamp = datetime("created_stamp")
+    val pickUpDate = datetime("pick_up_date")
+    val returningDate = datetime("returning_date")
 
     override val primaryKey = PrimaryKey(id)
 }

@@ -1,4 +1,4 @@
-package rmc.presentation.routes.car
+package rmc.presentation.routes.advertisement
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
@@ -7,23 +7,23 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
-import rmc.application.usecases.car.DeleteCarUsecase
+import rmc.application.usecases.advertisement.DeleteAdvertisementUsecase
 import kotlin.text.toIntOrNull
 
-fun Route.deleteCarRoute(deleteCarUsecase: DeleteCarUsecase) {
+fun Route.deleteAdvertisementRoute(deleteAdvertisementUsecase: DeleteAdvertisementUsecase) {
     authenticate("myAuth") {
-        route("/car") {
+        route("/advertisement") {
             delete("/delete/{id}") {
-                val carId = call.parameters["id"]?.toIntOrNull()
+                val advertisementId = call.parameters["id"]?.toIntOrNull()
 
-                if (carId == null) {
+                if (advertisementId == null) {
                     call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
                     return@delete
                 }
 
-                val isDeleted = deleteCarUsecase(carId)
+                val isDeleted = deleteAdvertisementUsecase(advertisementId)
                 if (!isDeleted) {
-                    call.respond(HttpStatusCode.NotFound, "Car could not be deleted $carId")
+                    call.respond(HttpStatusCode.NotFound, "Advertisement could not be deleted $advertisementId")
                     return@delete
                 }
 

@@ -9,5 +9,6 @@ data class RentAdvertisement(
     val userId: Int,
     val advertisementId: Int,
     val rentalStatus: RentalStatus,
-    val createdStamp: LocalDateTime,
+    val pickUpDate: LocalDateTime,
+    val returningDate: LocalDateTime,
 )

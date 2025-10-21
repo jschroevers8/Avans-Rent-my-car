@@ -8,13 +8,16 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import rmc.domain.entities.CarEntity
 import rmc.domain.repositories.CarRepositoryInterface
-import rmc.domain.repositories.UserRepositoryInterface
 import rmc.infrastructure.mappers.toCarEntity
 import rmc.infrastructure.tables.CarTable
 
-class CarRepository(
-    private val userRepository: UserRepositoryInterface,
-) : CarRepositoryInterface {
+class CarRepository() : CarRepositoryInterface {
+    override fun getAllCarsByUser(userId: Int): List<CarEntity> =
+        transaction {
+            CarTable.selectAll().where { CarTable.userId eq userId }
+                .map { it.toCarEntity() }
+        }
+
     override fun findById(id: Int): CarEntity? =
         transaction {
             CarTable.selectAll().where { CarTable.id eq id }
@@ -38,6 +41,7 @@ class CarRepository(
                         it[CarTable.userId] = car.userId
                         it[bodyType] = car.bodyType
                         it[brand] = car.brand
+                        it[model] = car.model
                         it[modelYear] = car.modelYear
                         it[licensePlate] = car.licensePlate
                         it[mileage] = car.mileage
@@ -52,6 +56,7 @@ class CarRepository(
                 it[CarTable.userId] = userId
                 it[bodyType] = car.bodyType
                 it[brand] = car.brand
+                it[model] = car.model
                 it[modelYear] = car.modelYear
                 it[licensePlate] = car.licensePlate
                 it[mileage] = car.mileage

@@ -16,10 +16,15 @@ class CreateAdvertisementUsecase(
             throw NotFoundException("Car not found")
         }
 
+        val existingAdvertisement = advertisementRepository.findOneByCarId(advertisementRequest.carId)
+        if (existingAdvertisement != null) {
+            throw IllegalArgumentException("An advertisement for this car already exists")
+        }
+
         val address =
             AddressEntity(
                 city = advertisementRequest.address.city,
-                street = advertisementRequest.address.city,
+                street = advertisementRequest.address.street,
                 houseNumber = advertisementRequest.address.houseNumber,
                 subHouseNumber = advertisementRequest.address.subHouseNumber,
                 postalCode = advertisementRequest.address.postalCode,
@@ -29,8 +34,8 @@ class CreateAdvertisementUsecase(
             AdvertisementEntity(
                 carId = advertisementRequest.carId,
                 address = address,
-                pickUpDate = advertisementRequest.pickUpDate,
-                returningDate = advertisementRequest.returningDate,
+                availableFrom = advertisementRequest.availableFrom,
+                availableUntil = advertisementRequest.availableUntil,
                 price = advertisementRequest.price,
             )
 

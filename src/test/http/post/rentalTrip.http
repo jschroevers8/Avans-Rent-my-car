@@ -1,5 +1,6 @@
 POST http://localhost:8080/rentalTrip/register
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjExNDk0NzZ9.y1m_kbDHxqnuDhsXxcMEicSlWK4aFvYOBnw0yJUpaTg
 
 {
   "rentalId": 1,

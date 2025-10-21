@@ -10,5 +10,6 @@ fun ResultRow.toRentalEntity() =
         userId = this[RentalTable.userId],
         advertisementId = this[RentalTable.advertisementId],
         rentalStatus = this[RentalTable.rentalStatus],
-        createdStamp = this[RentalTable.createdStamp],
+        returningDate = this[RentalTable.returningDate],
+        pickUpDate = this[RentalTable.pickUpDate],
     )

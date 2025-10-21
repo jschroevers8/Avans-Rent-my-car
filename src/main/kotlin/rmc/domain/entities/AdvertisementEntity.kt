@@ -6,7 +6,7 @@ data class AdvertisementEntity(
     val id: Int? = null,
     val carId: Int,
     val address: AddressEntity,
-    val pickUpDate: LocalDateTime,
-    val returningDate: LocalDateTime,
+    val availableFrom: LocalDateTime,
+    val availableUntil: LocalDateTime,
     val price: Double,
 )

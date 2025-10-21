@@ -8,6 +8,7 @@ data class CarEntity(
     val userId: Int,
     val bodyType: BodyType,
     val brand: String,
+    val model: String,
     val modelYear: String,
     val licensePlate: String,
     val mileage: String,
