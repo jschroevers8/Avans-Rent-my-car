@@ -15,7 +15,7 @@ fun Route.rentAdvertisementRoute(rentAdvertisementUsecase: RentAdvertisementUsec
             post("/advertisement") {
                 val request = call.receive<RentAdvertisement>()
 
-                val rental = rentAdvertisementUsecase.invoke(request)
+                val rental = rentAdvertisementUsecase(request)
 
                 call.respond(HttpStatusCode.Created, rental.toResponse())
             }

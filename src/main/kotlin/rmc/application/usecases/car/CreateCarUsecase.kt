@@ -13,7 +13,7 @@ class CreateCarUsecase(
     private val userRepository: UserRepositoryInterface,
     private val carImageRepository: CarImageRepositoryInterface,
 ) {
-    suspend fun invoke(carRequest: CreateCar): CarEntity {
+    operator fun invoke(carRequest: CreateCar): CarEntity {
         if (userRepository.findById(carRequest.userId) == null) {
             throw NotFoundException("User not found")
         }

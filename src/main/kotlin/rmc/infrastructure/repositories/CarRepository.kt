@@ -1,5 +1,7 @@
 package rmc.infrastructure.repositories
 
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -20,14 +22,14 @@ class CarRepository(
                 .singleOrNull()
         }
 
-    override suspend fun findByLicensePlate(licensePlate: String): CarEntity? =
+    override fun findByLicensePlate(licensePlate: String): CarEntity? =
         transaction {
             CarTable.selectAll().where { CarTable.licensePlate eq licensePlate }
                 .map { it.toCarEntity() }
                 .singleOrNull()
         }
 
-    override suspend fun save(car: CarEntity): CarEntity =
+    override fun save(car: CarEntity): CarEntity =
         transaction {
             if (car.id == null) {
                 val id =
@@ -59,11 +61,12 @@ class CarRepository(
             car
         }
 
-    override suspend fun delete(id: Int): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun delete(id: Int): Boolean =
+        transaction {
+            CarTable.deleteWhere { CarTable.id eq id } > 0
+        }
 
-    override suspend fun getAll(): List<CarEntity> =
+    override fun getAll(): List<CarEntity> =
         transaction {
             CarTable.selectAll().map { it.toCarEntity() }
         }

@@ -18,7 +18,7 @@ fun Route.createAdvertisementRoute(createAdvertisementUsecase: CreateAdvertiseme
             post("/create") {
                 val request = call.receive<CreateAdvertisement>()
 
-                val created = createAdvertisementUsecase.invoke(request)
+                val created = createAdvertisementUsecase(request)
 
                 call.respond(HttpStatusCode.Created, created.toResponse())
             }

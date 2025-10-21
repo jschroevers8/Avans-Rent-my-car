@@ -6,14 +6,15 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
-import rmc.application.usecases.car.GetCarUsecase
-import rmc.presentation.mappers.toResponse
+import rmc.application.usecases.car.DeleteCarUsecase
 import kotlin.text.toIntOrNull
 
-fun Route.getCarRoute(getCarUsecase: GetCarUsecase) {
+fun Route.deleteCarRoute(deleteCarUsecase: DeleteCarUsecase) {
     authenticate("myAuth") {
         route("/car") {
-            get("/show/{id}") {
+            get("/delete/{id}") {
+                call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
+
                 val carId = call.parameters["id"]?.toIntOrNull()
 
                 if (carId == null) {
@@ -21,13 +22,13 @@ fun Route.getCarRoute(getCarUsecase: GetCarUsecase) {
                     return@get
                 }
 
-                val car = getCarUsecase(carId)
-                if (car == null) {
-                    call.respond(HttpStatusCode.NotFound, "Car with id $carId not found")
+                val isDeleted = deleteCarUsecase(carId)
+                if (!isDeleted) {
+                    call.respond(HttpStatusCode.NotFound, "Car could not be deleted $carId")
                     return@get
                 }
 
-                call.respond(HttpStatusCode.OK, car.toResponse())
+                call.respond(HttpStatusCode.OK)
             }
         }
     }
