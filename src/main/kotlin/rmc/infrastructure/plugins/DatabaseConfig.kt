@@ -9,12 +9,23 @@ import rmc.infrastructure.tables.*
 fun initDatabase() {
     val dotenv = dotenv()
 
-    Database.connect(
-        url = dotenv["DB_URL"],
-        driver = "com.mysql.cj.jdbc.Driver",
-        user = dotenv["DB_USER"],
-        password = dotenv["DB_PASSWORD"],
-    )
+    val useLocaleDatabase = dotenv["USE_LOCALE_DATABASE"]?.toBoolean() ?: false
+
+    if (useLocaleDatabase) {
+        Database.connect(
+            url = dotenv["DB_URL"],
+            driver = "com.mysql.cj.jdbc.Driver",
+            user = dotenv["DB_USER"],
+            password = dotenv["DB_PASSWORD"],
+        )
+    } else {
+        Database.connect(
+            url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;",
+            driver = "org.h2.Driver",
+            user = "root",
+            password = "",
+        )
+    }
 
     transaction {
         SchemaUtils.createMissingTablesAndColumns(
