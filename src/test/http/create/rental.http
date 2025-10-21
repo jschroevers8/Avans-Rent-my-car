@@ -1,9 +1,0 @@
-POST http://localhost:8080/rent/advertisement
-Content-Type: application/json
-
-{
-  "userId": 1,
-  "advertisementId": 1,
-  "rentalStatus": "PENDING",
-  "createdStamp": "2025-10-18T14:30:00"
-}

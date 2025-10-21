@@ -13,8 +13,8 @@ fun ResultRow.toAdvertisementEntity(addressRepository: AddressRepositoryInterfac
         id = this[AdvertisementTable.id],
         carId = this[AdvertisementTable.carId],
         address = address,
-        pickUpDate = this[AdvertisementTable.pickUpDate],
-        returningDate = this[AdvertisementTable.returningDate],
+        availableFrom = this[AdvertisementTable.availableFrom],
+        availableUntil = this[AdvertisementTable.availableUntil],
         price = this[AdvertisementTable.price],
     )
 }

@@ -11,6 +11,7 @@ fun ResultRow.toCarEntity() =
         userId = this[CarTable.userId],
         bodyType = this[CarTable.bodyType],
         brand = this[CarTable.brand],
+        model = this[CarTable.model],
         modelYear = this[CarTable.modelYear],
         licensePlate = this[CarTable.licensePlate],
         mileage = this[CarTable.mileage],

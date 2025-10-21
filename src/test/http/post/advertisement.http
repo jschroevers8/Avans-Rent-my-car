@@ -1,0 +1,18 @@
+### Create a new car
+POST http://localhost:8080/advertisement/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjExNDk0NzZ9.y1m_kbDHxqnuDhsXxcMEicSlWK4aFvYOBnw0yJUpaTg
+
+{
+  "carId": 7,
+  "address": {
+    "street": "1234 Main Street",
+    "city": "Amsterdam",
+    "postalCode": "1011AA",
+    "houseNumber": 0,
+    "subHouseNumber": "test"
+  },
+  "availableFrom": "2020-08-30T18:43",
+  "availableUntil": "2020-08-30T18:43",
+  "price": 99.99
+}

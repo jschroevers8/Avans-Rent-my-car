@@ -8,7 +8,7 @@ fun AdvertisementEntity.toResponse() =
         id = id,
         carId = carId,
         address = address.toResponse(),
-        pickUpDate = pickUpDate,
-        returningDate = returningDate,
+        availableFrom = availableFrom,
+        availableUntil = availableUntil,
         price = price,
     )

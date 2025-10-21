@@ -28,6 +28,7 @@ class CreateCarUsecase(
                 userId = carRequest.userId,
                 bodyType = carRequest.bodyType,
                 brand = carRequest.brand,
+                model = carRequest.model,
                 modelYear = carRequest.modelYear,
                 licensePlate = carRequest.licensePlate,
                 mileage = carRequest.mileage,

@@ -6,5 +6,5 @@ import rmc.domain.repositories.AdvertisementRepositoryInterface
 class GetAvailableAdvertisementsUsecase(
     private val advertisementRepository: AdvertisementRepositoryInterface,
 ) {
-    operator fun invoke(): List<AdvertisementEntity> = advertisementRepository.getAll()
+    operator fun invoke(): List<AdvertisementEntity> = advertisementRepository.getAllAvailable()
 }

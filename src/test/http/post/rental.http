@@ -1,0 +1,22 @@
+### Rent advertisement
+POST http://localhost:8080/rent/advertisement
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjExNDk0NzZ9.y1m_kbDHxqnuDhsXxcMEicSlWK4aFvYOBnw0yJUpaTg
+
+{
+  "userId": 1,
+  "advertisementId": 6,
+  "rentalStatus": "ACTIVE",
+  "pickUpDate": "2025-10-18T14:30:00",
+  "returningDate": "2025-10-18T14:30:00"
+}
+
+### Cancel rental
+POST http://localhost:8080/rental/cancel/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjExNDk0NzZ9.y1m_kbDHxqnuDhsXxcMEicSlWK4aFvYOBnw0yJUpaTg
+
+### Approve rental
+POST http://localhost:8080/rental/approve/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjExNDk0NzZ9.y1m_kbDHxqnuDhsXxcMEicSlWK4aFvYOBnw0yJUpaTg
