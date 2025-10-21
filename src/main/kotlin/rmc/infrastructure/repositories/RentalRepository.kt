@@ -16,7 +16,7 @@ class RentalRepository : RentalRepositoryInterface {
                 .singleOrNull()
         }
 
-    override suspend fun save(rental: RentalEntity): RentalEntity =
+    override fun save(rental: RentalEntity): RentalEntity =
         transaction {
             val id =
                 RentalTable.insert {
@@ -28,12 +28,12 @@ class RentalRepository : RentalRepositoryInterface {
             rental.copy(id = id)
         }
 
-    override suspend fun getAll(): List<RentalEntity> =
+    override fun getAll(): List<RentalEntity> =
         transaction {
             RentalTable.selectAll().map { it.toRentalEntity() }
         }
 
-    override suspend fun delete(id: Int): Boolean =
+    override fun delete(id: Int): Boolean =
         transaction {
             RentalTable.deleteWhere { RentalTable.id eq id } > 0
         }

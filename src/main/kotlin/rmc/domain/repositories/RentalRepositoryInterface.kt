@@ -5,9 +5,9 @@ import rmc.domain.entities.RentalEntity
 interface RentalRepositoryInterface {
     fun findById(id: Int): RentalEntity?
 
-    suspend fun save(rental: RentalEntity): RentalEntity
+    fun save(rental: RentalEntity): RentalEntity
 
-    suspend fun getAll(): List<RentalEntity>
+    fun getAll(): List<RentalEntity>
 
-    suspend fun delete(id: Int): Boolean
+    fun delete(id: Int): Boolean
 }
