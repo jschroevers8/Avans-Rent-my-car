@@ -32,33 +32,5 @@ fun Route.userLoginRoute(
                 ContentType.Application.Json,
             )
         }
-
-//        val email = parameters.email.toString()
-//        val password = parameters.password.toString()
-//
-//        val jwtSecret = environment.config.property("jwt.secret").getString()
-//        val jwtAudience = environment.config.property("jwt.audience").getString()
-//        val jwtDomain = environment.config.property("jwt.domain").getString()
-//
-//        val user = loginUsecase.invoke(email)
-//
-//        if (user?.password == password) {
-//            val token = JWT.create()
-//                .withAudience(jwtAudience)
-//                .withIssuer(jwtDomain)
-//                .withClaim("userId", user.id)
-//                .withExpiresAt(Date(System.currentTimeMillis() + 24*60*60000))
-//                .sign(Algorithm.HMAC256(jwtSecret))
-//            call.respondText(
-//                Json.encodeToString(hashMapOf("token" to token)),
-//                ContentType.Application.Json
-//            )
-//        } else {
-//            call.response.status(HttpStatusCode.Unauthorized)
-//            call.respondText(
-//                Json.encodeToString(hashMapOf("error" to "Wrong login or password")),
-//                ContentType.Application.Json
-//            )
-//        }
     }
 }

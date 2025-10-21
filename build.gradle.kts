@@ -15,6 +15,8 @@ application {
 }
 
 dependencies {
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+    implementation("mysql:mysql-connector-java:8.0.33")
     implementation("io.ktor:ktor-server-content-negotiation:2.3.4")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
