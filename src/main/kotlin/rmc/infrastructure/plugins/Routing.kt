@@ -7,6 +7,7 @@ import rmc.application.usecases.advertisement.CreateAdvertisementUsecase
 import rmc.application.usecases.advertisement.GetAdvertisementUsecase
 import rmc.application.usecases.advertisement.GetAvailableAdvertisementsUsecase
 import rmc.application.usecases.car.CreateCarUsecase
+import rmc.application.usecases.car.DeleteCarUsecase
 import rmc.application.usecases.car.GetCarUsecase
 import rmc.application.usecases.rental.RentAdvertisementUsecase
 import rmc.application.usecases.rentaltrip.RegisterRentalTripUsecase
@@ -31,6 +32,7 @@ import rmc.presentation.routes.advertisement.createAdvertisementRoute
 import rmc.presentation.routes.advertisement.getAdvertisementRoute
 import rmc.presentation.routes.advertisement.getAvailableAdvertisementsRoute
 import rmc.presentation.routes.car.createCarRoute
+import rmc.presentation.routes.car.deleteCarRoute
 import rmc.presentation.routes.car.getCarRoute
 import rmc.presentation.routes.rental.rentAdvertisementRoute
 import rmc.presentation.routes.rentaltrip.registerRentalTripRoute
@@ -50,6 +52,7 @@ fun Application.configureRouting() {
     val userSignupUsecase = SignupUsecase(userRepository)
     val createCarUsecase = CreateCarUsecase(carRepository, userRepository, carImageRepository)
     val getCarUsecase = GetCarUsecase(carRepository, carImageRepository)
+    val deleteCarUsecase = DeleteCarUsecase(carRepository, carImageRepository)
     val createAdvertisementUsecase = CreateAdvertisementUsecase(carRepository, advertisementRepository)
     val getAdvertisementUsecase = GetAdvertisementUsecase(advertisementRepository)
     val getAvailableAdvertisementsUsecase = GetAvailableAdvertisementsUsecase(advertisementRepository)
@@ -68,6 +71,7 @@ fun Application.configureRouting() {
         userSignupRoute(userSignupUsecase)
         createCarRoute(createCarUsecase)
         getCarRoute(getCarUsecase)
+        deleteCarRoute(deleteCarUsecase)
         createAdvertisementRoute(createAdvertisementUsecase)
         getAdvertisementRoute(getAdvertisementUsecase)
         getAvailableAdvertisementsRoute(getAvailableAdvertisementsUsecase)

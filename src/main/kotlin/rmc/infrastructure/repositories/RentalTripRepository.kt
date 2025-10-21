@@ -16,7 +16,7 @@ class RentalTripRepository : RentalTripRepositoryInterface {
                 .singleOrNull()
         }
 
-    override suspend fun save(rentalTrip: RentalTripEntity): RentalTripEntity =
+    override fun save(rentalTrip: RentalTripEntity): RentalTripEntity =
         transaction {
             val id =
                 RentalTripTable.insert {
@@ -29,12 +29,12 @@ class RentalTripRepository : RentalTripRepositoryInterface {
             rentalTrip.copy(id = id)
         }
 
-    override suspend fun getAll(): List<RentalTripEntity> =
+    override fun getAll(): List<RentalTripEntity> =
         transaction {
             RentalTripTable.selectAll().map { it.toRentalTripEntity() }
         }
 
-    override suspend fun delete(id: Int): Boolean =
+    override fun delete(id: Int): Boolean =
         transaction {
             RentalTripTable.deleteWhere { RentalTripTable.id eq id } > 0
         }

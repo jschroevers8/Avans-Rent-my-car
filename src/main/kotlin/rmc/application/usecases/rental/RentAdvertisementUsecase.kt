@@ -12,7 +12,7 @@ class RentAdvertisementUsecase(
     private val userRepository: UserRepositoryInterface,
     private val advertisementRepository: AdvertisementRepositoryInterface,
 ) {
-    suspend fun invoke(request: RentAdvertisement): RentalEntity {
+    operator fun invoke(request: RentAdvertisement): RentalEntity {
         if (userRepository.findById(request.userId) == null) {
             throw NotFoundException("User not found")
         }

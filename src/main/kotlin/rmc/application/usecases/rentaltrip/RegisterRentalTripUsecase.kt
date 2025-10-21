@@ -10,7 +10,7 @@ class RegisterRentalTripUsecase(
     private val rentalTripRepository: RentalTripRepositoryInterface,
     private val rentalRepository: RentalRepositoryInterface,
 ) {
-    suspend fun invoke(request: RegisterRentalTrip): RentalTripEntity {
+    operator fun invoke(request: RegisterRentalTrip): RentalTripEntity {
         if (rentalRepository.findById(request.rentalId) == null) {
             throw NotFoundException("Rental not found")
         }

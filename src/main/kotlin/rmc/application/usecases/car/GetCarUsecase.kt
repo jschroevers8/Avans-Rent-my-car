@@ -8,7 +8,7 @@ class GetCarUsecase(
     private val carRepository: CarRepositoryInterface,
     private val carImageRepository: CarImageRepositoryInterface,
 ) {
-    fun invoke(carId: Int): CarEntity? {
+    operator fun invoke(carId: Int): CarEntity? {
         val car = carRepository.findById(carId) ?: return null
 
         val images = carImageRepository.findByCarId(car.id!!)

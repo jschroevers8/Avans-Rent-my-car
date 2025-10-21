@@ -19,7 +19,7 @@ fun Route.getAdvertisementRoute(getAdvertisementUsecase: GetAdvertisementUsecase
                 return@get
             }
 
-            val advertisement = getAdvertisementUsecase.invoke(advertisementId)
+            val advertisement = getAdvertisementUsecase(advertisementId)
             if (advertisement == null) {
                 call.respond(HttpStatusCode.NotFound, "Advertisement with id $advertisementId not found")
                 return@get

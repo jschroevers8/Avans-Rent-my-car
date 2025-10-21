@@ -1,8 +1,11 @@
 package rmc.infrastructure.repositories
 
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import rmc.domain.entities.CarEntity
 import rmc.domain.entities.CarImageEntity
 import rmc.domain.repositories.CarImageRepositoryInterface
 import rmc.infrastructure.mappers.toCarImageEntity
@@ -13,6 +16,11 @@ class CarImageRepository() : CarImageRepositoryInterface {
         transaction {
             CarImageTable.selectAll().where { CarImageTable.carId eq carId }
                 .map { it.toCarImageEntity() }
+        }
+
+    override fun deleteAllByCar(car: CarEntity): Boolean =
+        transaction {
+            CarImageTable.deleteWhere { CarImageTable.carId eq car.id!! } > 0
         }
 
     override fun save(carImage: CarImageEntity): CarImageEntity =

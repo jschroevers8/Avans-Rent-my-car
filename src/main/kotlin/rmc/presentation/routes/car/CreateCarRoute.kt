@@ -17,7 +17,7 @@ fun Route.createCarRoute(createCarUsecase: CreateCarUsecase) {
             post("/create") {
                 val request = call.receive<CreateCar>()
 
-                val car = createCarUsecase.invoke(request)
+                val car = createCarUsecase(request)
 
                 call.respond(HttpStatusCode.Created, car.toResponse())
             }

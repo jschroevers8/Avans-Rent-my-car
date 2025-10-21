@@ -11,7 +11,7 @@ import rmc.presentation.mappers.toResponse
 fun Route.getAvailableAdvertisementsRoute(getAvailableAdvertisementsUsecase: GetAvailableAdvertisementsUsecase) {
     route("/advertisement") {
         get("/all") {
-            val advertisements = getAvailableAdvertisementsUsecase.invoke()
+            val advertisements = getAvailableAdvertisementsUsecase()
 
             call.respond(HttpStatusCode.OK, advertisements.map { it.toResponse() })
         }

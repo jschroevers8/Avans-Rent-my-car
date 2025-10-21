@@ -15,7 +15,7 @@ fun Route.userSignupRoute(signupUsecase: SignupUsecase) {
         post {
             val request = call.receive<CreateUser>()
 
-            val created = signupUsecase.invoke(request)
+            val created = signupUsecase(request)
 
             call.respond(HttpStatusCode.Created, created.toResponse())
         }

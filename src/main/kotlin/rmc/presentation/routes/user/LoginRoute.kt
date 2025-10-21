@@ -17,7 +17,7 @@ fun Route.userLoginRoute(
 ) {
     post("/login") {
         val request = call.receive<LoginRequestDTO>()
-        val user = loginUsecase.invoke(request.email, request.password)
+        val user = loginUsecase(request.email, request.password)
 
         if (user != null) {
             val token = authenticator.generateToken(user)

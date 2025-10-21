@@ -11,7 +11,7 @@ class CreateAdvertisementUsecase(
     private val carRepository: CarRepositoryInterface,
     private val advertisementRepository: AdvertisementRepositoryInterface,
 ) {
-    fun invoke(advertisementRequest: CreateAdvertisement): AdvertisementEntity {
+    operator fun invoke(advertisementRequest: CreateAdvertisement): AdvertisementEntity {
         if (carRepository.findById(advertisementRequest.carId) == null) {
             throw NotFoundException("Car not found")
         }

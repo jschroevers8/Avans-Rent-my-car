@@ -9,7 +9,7 @@ import rmc.presentation.dto.user.CreateUser
 class SignupUsecase(
     private val userRepository: UserRepositoryInterface,
 ) {
-    suspend fun invoke(userRequest: CreateUser): UserEntity {
+    operator fun invoke(userRequest: CreateUser): UserEntity {
         if (userRepository.findByEmail(userRequest.email) != null) {
             throw NotFoundException("User with this email already exists")
         }

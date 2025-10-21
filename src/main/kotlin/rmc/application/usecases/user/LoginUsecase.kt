@@ -6,7 +6,7 @@ import rmc.domain.repositories.UserRepositoryInterface
 class LoginUsecase(
     private val userRepository: UserRepositoryInterface,
 ) {
-    fun invoke(
+    operator fun invoke(
         email: String,
         password: String,
     ): UserEntity? {

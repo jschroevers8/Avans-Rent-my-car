@@ -15,7 +15,7 @@ fun Route.registerRentalTripRoute(registerRentalTripUsecase: RegisterRentalTripU
             post("/register") {
                 val request = call.receive<RegisterRentalTrip>()
 
-                val trip = registerRentalTripUsecase.invoke(request)
+                val trip = registerRentalTripUsecase(request)
 
                 call.respond(HttpStatusCode.Created, trip.toResponse())
             }
