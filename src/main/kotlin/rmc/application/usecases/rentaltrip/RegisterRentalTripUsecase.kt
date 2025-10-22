@@ -1,6 +1,6 @@
 package rmc.application.usecases.rentaltrip
 
-import rmc.application.exceptions.NotFoundException
+import rmc.application.exceptions.RentalNotFoundException
 import rmc.domain.entities.RentalTripEntity
 import rmc.domain.repositories.RentalRepositoryInterface
 import rmc.domain.repositories.RentalTripRepositoryInterface
@@ -11,8 +11,9 @@ class RegisterRentalTripUsecase(
     private val rentalRepository: RentalRepositoryInterface,
 ) {
     operator fun invoke(request: RegisterRentalTrip): RentalTripEntity {
-        if (rentalRepository.findById(request.rentalId) == null) {
-            throw NotFoundException("Rental not found")
+        val rentalId = request.rentalId
+        if (rentalRepository.findById(rentalId) == null) {
+            throw RentalNotFoundException("Rental with id $rentalId not found")
         }
 
         val trip =

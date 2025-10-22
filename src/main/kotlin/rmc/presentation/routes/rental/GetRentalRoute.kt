@@ -22,10 +22,6 @@ fun Route.getRentalRoute(getRentalUsecase: GetRentalUsecase) {
                 }
 
                 val rental = getRentalUsecase(rentalId)
-                if (rental == null) {
-                    call.respond(HttpStatusCode.NotFound, "Rental with id $rentalId not found")
-                    return@get
-                }
 
                 call.respond(HttpStatusCode.OK, rental.toResponse())
             }

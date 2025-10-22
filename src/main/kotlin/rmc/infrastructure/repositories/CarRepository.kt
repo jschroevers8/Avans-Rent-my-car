@@ -12,7 +12,7 @@ import rmc.infrastructure.mappers.toCarEntity
 import rmc.infrastructure.tables.CarTable
 
 class CarRepository() : CarRepositoryInterface {
-    override fun getAllCarsByUser(userId: Int): List<CarEntity> =
+    override fun getAllCarsByUserId(userId: Int): List<CarEntity> =
         transaction {
             CarTable.selectAll().where { CarTable.userId eq userId }
                 .map { it.toCarEntity() }

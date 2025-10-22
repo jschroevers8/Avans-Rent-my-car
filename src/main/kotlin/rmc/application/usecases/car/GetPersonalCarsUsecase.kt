@@ -9,11 +9,11 @@ class GetPersonalCarsUsecase(
     private val carImageRepository: CarImageRepositoryInterface,
 ) {
     operator fun invoke(userId: Int): List<CarEntity> {
-        val cars = carRepository.getAllCarsByUser(userId)
+        val cars = carRepository.getAllCarsByUserId(userId)
 
         for (car in cars) {
             val images = carImageRepository.findByCarId(car.id!!)
-            car.setImages(images) // or car.images = images if using a property
+            car.setImages(images)
         }
 
         return cars

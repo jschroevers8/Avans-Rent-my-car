@@ -3,7 +3,7 @@ package rmc.domain.repositories
 import rmc.domain.entities.CarEntity
 
 interface CarRepositoryInterface {
-    fun getAllCarsByUser(userId: Int): List<CarEntity>
+    fun getAllCarsByUserId(userId: Int): List<CarEntity>
 
     fun findById(id: Int): CarEntity?
 

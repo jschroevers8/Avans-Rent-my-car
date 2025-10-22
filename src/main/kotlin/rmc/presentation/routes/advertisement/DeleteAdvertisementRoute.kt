@@ -18,16 +18,13 @@ fun Route.deleteAdvertisementRoute(deleteAdvertisementUsecase: DeleteAdvertiseme
 
                 if (advertisementId == null) {
                     call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
+
                     return@delete
                 }
 
-                val isDeleted = deleteAdvertisementUsecase(advertisementId)
-                if (!isDeleted) {
-                    call.respond(HttpStatusCode.NotFound, "Advertisement could not be deleted $advertisementId")
-                    return@delete
-                }
+                deleteAdvertisementUsecase(advertisementId)
 
-                call.respond(HttpStatusCode.OK)
+                call.respond(HttpStatusCode.NoContent)
             }
         }
     }

@@ -22,10 +22,6 @@ fun Route.getCarRoute(getCarUsecase: GetCarUsecase) {
                 }
 
                 val car = getCarUsecase(carId)
-                if (car == null) {
-                    call.respond(HttpStatusCode.NotFound, "Car with id $carId not found")
-                    return@get
-                }
 
                 call.respond(HttpStatusCode.OK, car.toResponse())
             }

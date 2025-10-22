@@ -18,16 +18,13 @@ fun Route.deleteCarRoute(deleteCarUsecase: DeleteCarUsecase) {
 
                 if (carId == null) {
                     call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
+
                     return@delete
                 }
 
-                val isDeleted = deleteCarUsecase(carId)
-                if (!isDeleted) {
-                    call.respond(HttpStatusCode.NotFound, "Car could not be deleted $carId")
-                    return@delete
-                }
+                deleteCarUsecase(carId)
 
-                call.respond(HttpStatusCode.OK)
+                call.respond(HttpStatusCode.NoContent)
             }
         }
     }

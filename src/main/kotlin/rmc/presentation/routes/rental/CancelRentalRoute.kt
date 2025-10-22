@@ -23,10 +23,6 @@ fun Route.cancelRentalRoute(cancelRentalUsecase: CancelRentalUsecase) {
                 }
 
                 val rental = cancelRentalUsecase(rentalId)
-                if (rental == null) {
-                    call.respond(HttpStatusCode.NotFound, "Rental can't be cancelled $rentalId")
-                    return@post
-                }
 
                 call.respond(HttpStatusCode.OK, rental.toResponse())
             }

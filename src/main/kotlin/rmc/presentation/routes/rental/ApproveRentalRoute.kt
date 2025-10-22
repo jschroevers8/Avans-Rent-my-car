@@ -23,10 +23,6 @@ fun Route.approveRentalRoute(approveRentalUsecase: ApproveRentalUsecase) {
                 }
 
                 val rental = approveRentalUsecase(rentalId)
-                if (rental == null) {
-                    call.respond(HttpStatusCode.NotFound, "Rental can't be approve, because it doesn't have status Pending")
-                    return@post
-                }
 
                 call.respond(HttpStatusCode.OK, rental.toResponse())
             }
