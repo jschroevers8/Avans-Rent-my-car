@@ -20,10 +20,6 @@ fun Route.getAdvertisementRoute(getAdvertisementUsecase: GetAdvertisementUsecase
             }
 
             val advertisement = getAdvertisementUsecase(advertisementId)
-            if (advertisement == null) {
-                call.respond(HttpStatusCode.NotFound, "Advertisement with id $advertisementId not found")
-                return@get
-            }
 
             call.respond(HttpStatusCode.OK, advertisement.toResponse())
         }

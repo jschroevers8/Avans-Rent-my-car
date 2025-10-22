@@ -6,6 +6,7 @@ import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import rmc.infrastructure.plugins.configureRouting
 import rmc.infrastructure.plugins.configureSecurity
+import rmc.infrastructure.plugins.configureStatusPages
 import rmc.infrastructure.plugins.initDatabase
 
 fun main(args: Array<String>) {
@@ -20,4 +21,5 @@ fun Application.module() {
     initDatabase()
     configureSecurity()
     configureRouting()
+    configureStatusPages()
 }

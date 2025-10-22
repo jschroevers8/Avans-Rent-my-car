@@ -1,8 +1,10 @@
 package rmc.application.usecases.car
 
-import rmc.application.exceptions.NotFoundException
+import rmc.application.exceptions.CarAlreadyExistsException
+import rmc.application.exceptions.UserNotFoundException
 import rmc.domain.entities.CarEntity
 import rmc.domain.entities.CarImageEntity
+import rmc.domain.entities.UserType
 import rmc.domain.repositories.CarImageRepositoryInterface
 import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
@@ -14,12 +16,17 @@ class CreateCarUsecase(
     private val carImageRepository: CarImageRepositoryInterface,
 ) {
     operator fun invoke(carRequest: CreateCar): CarEntity {
-        if (userRepository.findById(carRequest.userId) == null) {
-            throw NotFoundException("User not found")
+        val userId = carRequest.userId
+        val user =
+            userRepository.findById(userId)
+                ?: throw UserNotFoundException("User with id $userId not found")
+
+        if (user.userType != UserType.CUSTOMER) {
+            throw IllegalAccessException("Only customers can add a car")
         }
 
-        if (carRepository.findByLicensePlate(carRequest.licensePlate) != null) {
-            throw NotFoundException("Car with this license plate already exists")
+        carRepository.findByLicensePlate(carRequest.licensePlate)?.let {
+            throw CarAlreadyExistsException("Car with this license plate already exists")
         }
 
         val car =

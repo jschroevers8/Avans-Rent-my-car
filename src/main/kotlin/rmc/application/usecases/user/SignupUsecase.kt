@@ -1,6 +1,6 @@
 package rmc.application.usecases.user
 
-import rmc.application.exceptions.NotFoundException
+import rmc.application.exceptions.UserAlreadyExistsException
 import rmc.domain.entities.AddressEntity
 import rmc.domain.entities.UserEntity
 import rmc.domain.repositories.UserRepositoryInterface
@@ -11,7 +11,7 @@ class SignupUsecase(
 ) {
     operator fun invoke(userRequest: CreateUser): UserEntity {
         if (userRepository.findByEmail(userRequest.email) != null) {
-            throw NotFoundException("User with this email already exists")
+            throw UserAlreadyExistsException("User with email ${userRequest.email} already exists")
         }
 
         val address =

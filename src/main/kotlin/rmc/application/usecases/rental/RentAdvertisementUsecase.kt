@@ -1,6 +1,7 @@
 package rmc.application.usecases.rental
 
-import rmc.application.exceptions.NotFoundException
+import rmc.application.exceptions.AdvertisementNotFoundException
+import rmc.application.exceptions.UserNotFoundException
 import rmc.domain.entities.RentalEntity
 import rmc.domain.repositories.AdvertisementRepositoryInterface
 import rmc.domain.repositories.RentalRepositoryInterface
@@ -13,12 +14,14 @@ class RentAdvertisementUsecase(
     private val advertisementRepository: AdvertisementRepositoryInterface,
 ) {
     operator fun invoke(request: RentAdvertisement): RentalEntity {
-        if (userRepository.findById(request.userId) == null) {
-            throw NotFoundException("User not found")
+        val userId = request.userId
+        userRepository.findById(userId)?.let {
+            throw UserNotFoundException("User with id $userId not found")
         }
 
-        if (advertisementRepository.findById(request.advertisementId) == null) {
-            throw NotFoundException("Advertisement not found")
+        val advertisementId = request.advertisementId
+        if (advertisementRepository.findById(advertisementId) == null) {
+            throw AdvertisementNotFoundException("Advertisement with id $advertisementId not found")
         }
 
         val rental =
