@@ -1,56 +1,114 @@
-name: API Tests
+name: Test Ktor API
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
 
 jobs:
-  test:
+  test-api:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
-        image: postgres:16
+      mysql:
+        image: mysql:8
         env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: testdb
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testdb
         ports:
-          - 5432:5432
+          - 3306:3306
         options: >-
-          --health-cmd="pg_isready -U test"
-          --health-interval=5s
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=3
+
+    env:
+      DB_URL: jdbc:mysql://localhost:3306/testdb
+      DB_USER: root
+      DB_PASSWORD: root
+      USE_LOCALE_DATABASE: "true"
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Grant execute permission for Gradle wrapper
-        run: chmod +x gradlew
+          distribution: temurin
+          java-version: 17
 
       - name: Cache Gradle packages
-        uses: actions/cache@v4
+        uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+            ~/.gradle/wrapper/
+          key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: gradle-
 
-      - name: Install httpyac
+      - name: Build project
+        run: ./gradlew build --no-daemon
+
+      - name: Start Ktor server
+        run: nohup java -jar build/libs/your-app-all.jar &
+
+      - name: Wait for server
         run: |
-          npm install -g httpyac
+          for i in {1..10}; do
+            curl -s http://localhost:8080/health && break
+            echo "Waiting for server..."
+            sleep 5
+          done
 
       - name: Run HTTP tests
         run: |
-          httpyac test src/test/api/api.http --verbose --env all
+          # Signup
+          curl -X POST http://localhost:8080/signup \
+            -H "Content-Type: application/json" \
+            -d '{
+              "email": "test@example.com",
+              "userType": "CUSTOMER",
+              "password": "secret",
+              "firstName": "John",
+              "lastName": "Doe",
+              "phone": "06 123456789",
+              "userPoints": 0,
+              "address": {
+                "street": "123 Main Street",
+                "city": "Amsterdam",
+                "postalCode": "1011AA",
+                "houseNumber": 0,
+                "subHouseNumber": "test"
+              }
+            }'
+
+          # Login
+          TOKEN=$(curl -s -X POST http://localhost:8080/login \
+            -H "Content-Type: application/json" \
+            -d '{"email":"test@example.com","password":"secret"}' | jq -r '.token')
+
+          # Create a car
+          curl -X POST http://localhost:8080/car/create \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $TOKEN" \
+            -d '{
+              "fuelType": "ICE",
+              "userId": 1,
+              "bodyType": "SEDAN",
+              "brand": "Toyota",
+              "modelYear": "2022",
+              "model": "Supra",
+              "licensePlate": "KTR-123-A",
+              "mileage": "34000",
+              "createdStamp": "2020-08-30T18:43",
+              "carImages": [
+                { "image": "base64EncodedImageStringHere" }
+              ]
+            }'
+
+          # Get personal cars
+          curl -X GET http://localhost:8080/personal/cars \
+            -H "Authorization: Bearer $TOKEN"
