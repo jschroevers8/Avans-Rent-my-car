@@ -53,4 +53,4 @@ jobs:
 
       - name: Run HTTP tests
         run: |
-          httpyac test test/api/api.http --verbose
+          httpyac test src/test/api/api.http --verbose
