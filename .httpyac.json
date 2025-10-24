@@ -1,9 +1,0 @@
-{
-  "environments": {
-    "all": {
-      "baseUrl": "http://localhost:8080",
-      "email": "test@example.com",
-      "password": "secret"
-    }
-  }
-}
