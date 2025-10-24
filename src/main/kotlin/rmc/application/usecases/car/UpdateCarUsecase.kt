@@ -49,16 +49,12 @@ class UpdateCarUsecase(
 
         val savedCar = carRepository.save(updatedCar)
 
-        // Oude afbeeldingen verwijderen
         carImageRepository.deleteAllByCar(savedCar)
 
-        // Afbeeldingen van DTO
         val images = carRequest.carImages.toMutableList()
 
-        // Voeg één extra afbeelding toe
         images.add(CreateCarImage("extra-image.jpg"))
 
-        // Opslaan van afbeeldingen
         val savedImages =
             images.mapIndexed { index, image ->
                 val carImage =
@@ -70,7 +66,6 @@ class UpdateCarUsecase(
                 carImageRepository.save(carImage)
             }
 
-        // Koppel afbeeldingen aan auto
         savedCar.setImages(savedImages)
 
         return savedCar
