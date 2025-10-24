@@ -25,24 +25,26 @@ class LoginUsecaseTest {
 
     @Test
     fun `should return user when email and password are correct`() {
-        val address = AddressEntity(
-            street = "fooStreet",
-            city = "fooCity",
-            postalCode = "1011AA",
-            houseNumber = 1,
-            subHouseNumber = "foo",
-        )
+        val address =
+            AddressEntity(
+                street = "fooStreet",
+                city = "fooCity",
+                postalCode = "1011AA",
+                houseNumber = 1,
+                subHouseNumber = "foo",
+            )
 
-        val user = UserEntity(
-            id = 1,
-            email = "test@example.com",
-            password = "password123",
-            userType = UserType.CUSTOMER,
-            address = address,
-            firstName = "test",
-            lastName = "test",
-            phone = "1234567890",
-            userPoints = 1
+        val user =
+            UserEntity(
+                id = 1,
+                email = "test@example.com",
+                password = "password123",
+                userType = UserType.CUSTOMER,
+                address = address,
+                firstName = "test",
+                lastName = "test",
+                phone = "1234567890",
+                userPoints = 1,
             )
 
         every { userRepository.findByEmail("test@example.com") } returns user
@@ -67,25 +69,27 @@ class LoginUsecaseTest {
 
     @Test
     fun `should throw InvalidCredentialsException when password is incorrect`() {
-        val address = AddressEntity(
-            street = "fooStreet",
-            city = "fooCity",
-            postalCode = "1011AA",
-            houseNumber = 1,
-            subHouseNumber = "foo",
-        )
+        val address =
+            AddressEntity(
+                street = "fooStreet",
+                city = "fooCity",
+                postalCode = "1011AA",
+                houseNumber = 1,
+                subHouseNumber = "foo",
+            )
 
-        val user = UserEntity(
-            id = 1,
-            email = "test@example.com",
-            password = "password123",
-            userType = UserType.CUSTOMER,
-            address = address,
-            firstName = "test",
-            lastName = "test",
-            phone = "1234567890",
-            userPoints = 1
-        )
+        val user =
+            UserEntity(
+                id = 1,
+                email = "test@example.com",
+                password = "password123",
+                userType = UserType.CUSTOMER,
+                address = address,
+                firstName = "test",
+                lastName = "test",
+                phone = "1234567890",
+                userPoints = 1,
+            )
 
         every { userRepository.findByEmail("test@example.com") } returns user
 

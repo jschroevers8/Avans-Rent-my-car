@@ -8,6 +8,8 @@ class CarNotFoundException(message: String) : RuntimeException(message)
 
 class CarHasActiveRentalException(message: String) : RuntimeException(message)
 
+class InvalidUserException(message: String) : RuntimeException(message)
+
 class UserNotFoundException(message: String) : RuntimeException(message)
 
 class UserAlreadyExistsException(message: String) : RuntimeException(message)

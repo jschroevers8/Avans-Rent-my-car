@@ -29,6 +29,10 @@ fun Application.configureStatusPages() {
             call.respond(HttpStatusCode.Conflict, mapOf("error" to cause.message))
         }
 
+        exception<InvalidUserException> { call, cause ->
+            call.respond(HttpStatusCode.BadRequest, cause.message ?: "Invalid user")
+        }
+
         exception<UserNotFoundException> { call, cause ->
             call.respond(HttpStatusCode.NotFound, mapOf("error" to cause.message))
         }
