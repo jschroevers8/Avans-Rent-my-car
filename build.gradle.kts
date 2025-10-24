@@ -39,4 +39,6 @@ dependencies {
     implementation("io.ktor:ktor-server-core:3.3.0")
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 }
