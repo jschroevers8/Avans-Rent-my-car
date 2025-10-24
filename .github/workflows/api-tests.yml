@@ -47,12 +47,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Install JetBrains HTTP Client CLI
+      - name: Install httpyac
         run: |
-          curl -L https://github.com/JetBrains/http-client-cli/releases/download/v1.0.2/http-client-cli-1.0.2.zip -o cli.zip
-          unzip cli.zip -d cli
-          chmod +x cli/bin/jb
+          npm install -g httpyac
 
       - name: Run HTTP tests
         run: |
-          ./cli/bin/jb http-client run test/api.http --env local
+          httpyac test tests/api.http --verbose
