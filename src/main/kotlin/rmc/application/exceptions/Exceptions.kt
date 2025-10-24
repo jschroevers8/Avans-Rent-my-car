@@ -12,6 +12,8 @@ class UserNotFoundException(message: String) : RuntimeException(message)
 
 class UserAlreadyExistsException(message: String) : RuntimeException(message)
 
+class UnauthorizedCarAccessException(message: String) : RuntimeException(message)
+
 class AdvertisementAlreadyExistsForCarException(message: String) : RuntimeException(message)
 
 class AdvertisementNotFoundException(message: String) : RuntimeException(message)

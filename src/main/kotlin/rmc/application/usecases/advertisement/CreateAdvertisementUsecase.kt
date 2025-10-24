@@ -1,7 +1,9 @@
 package rmc.application.usecases.advertisement
 
 import rmc.application.exceptions.AdvertisementAlreadyExistsForCarException
+import rmc.application.exceptions.AdvertisementNotFoundException
 import rmc.application.exceptions.CarNotFoundException
+import rmc.application.exceptions.UnauthorizedCarAccessException
 import rmc.domain.entities.AddressEntity
 import rmc.domain.entities.AdvertisementEntity
 import rmc.domain.repositories.AdvertisementRepositoryInterface
@@ -12,10 +14,14 @@ class CreateAdvertisementUsecase(
     private val carRepository: CarRepositoryInterface,
     private val advertisementRepository: AdvertisementRepositoryInterface,
 ) {
-    operator fun invoke(advertisementRequest: CreateAdvertisement): AdvertisementEntity {
+    operator fun invoke(advertisementRequest: CreateAdvertisement, userId: Int): AdvertisementEntity {
         val carId = advertisementRequest.carId
-        if (carRepository.findById(carId) == null) {
-            throw CarNotFoundException("Car with id $carId not found")
+        val car =
+            carRepository.findById(carId)
+                ?: throw CarNotFoundException("Advertisement with id $carId not found")
+
+        if (car.userId != userId) {
+            throw UnauthorizedCarAccessException("User is not allowed to access this car")
         }
 
         val existingAdvertisement = advertisementRepository.findOneByCarId(advertisementRequest.carId)

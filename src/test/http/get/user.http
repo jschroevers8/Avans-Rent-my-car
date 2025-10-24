@@ -1,3 +1,5 @@
 ### Get user by ID
-GET http://localhost:8080/login/1
+GET {{baseUrl}}/login/1
 Accept: application/json
+
+> {% client.global.set("token", response.body.token); %}
