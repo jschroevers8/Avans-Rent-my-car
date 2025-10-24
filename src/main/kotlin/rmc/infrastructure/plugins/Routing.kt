@@ -11,6 +11,7 @@ import rmc.application.usecases.car.CreateCarUsecase
 import rmc.application.usecases.car.DeleteCarUsecase
 import rmc.application.usecases.car.GetCarUsecase
 import rmc.application.usecases.car.GetPersonalCarsUsecase
+import rmc.application.usecases.car.UpdateCarUsecase
 import rmc.application.usecases.rental.ApproveRentalUsecase
 import rmc.application.usecases.rental.CancelRentalUsecase
 import rmc.application.usecases.rental.GetRentalUsecase
@@ -41,6 +42,7 @@ import rmc.presentation.routes.car.createCarRoute
 import rmc.presentation.routes.car.deleteCarRoute
 import rmc.presentation.routes.car.getCarRoute
 import rmc.presentation.routes.car.getPersonalCarsRoute
+import rmc.presentation.routes.car.updateCarRoute
 import rmc.presentation.routes.rental.approveRentalRoute
 import rmc.presentation.routes.rental.cancelRentalRoute
 import rmc.presentation.routes.rental.getRentalRoute
@@ -61,6 +63,7 @@ fun Application.configureRouting() {
     val userLoginUsecase = LoginUsecase(userRepository)
     val userSignupUsecase = SignupUsecase(userRepository)
     val createCarUsecase = CreateCarUsecase(carRepository, userRepository, carImageRepository)
+    val updateCarUsecase = UpdateCarUsecase(carRepository, userRepository, carImageRepository)
     val getCarUsecase = GetCarUsecase(carRepository, carImageRepository)
     val getPersonalCarsUsecase = GetPersonalCarsUsecase(carRepository, carImageRepository)
     val deleteCarUsecase = DeleteCarUsecase(carRepository, carImageRepository, advertisementRepository, rentalRepository)
@@ -85,6 +88,7 @@ fun Application.configureRouting() {
         userLoginRoute(userLoginUsecase, authenticator)
         userSignupRoute(userSignupUsecase)
         createCarRoute(createCarUsecase)
+        updateCarRoute(updateCarUsecase)
         getCarRoute(getCarUsecase)
         getPersonalCarsRoute(getPersonalCarsUsecase)
         deleteCarRoute(deleteCarUsecase)
