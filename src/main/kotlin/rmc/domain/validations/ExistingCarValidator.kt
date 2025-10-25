@@ -1,4 +1,4 @@
-package rmc.domain.validatie
+package rmc.domain.validations
 
 import rmc.domain.exceptions.CarAlreadyExistsException
 import rmc.domain.repositories.CarRepositoryInterface
