@@ -16,15 +16,15 @@ class RegisterRentalTripUsecase(
             throw RentalNotFoundException("Rental with id $rentalId not found")
         }
 
-        val trip =
-            RentalTripEntity(
-                rentalId = request.rentalId,
-                startMileage = request.startMileage,
-                endMileage = request.endMileage,
-                startDate = request.startDate,
-                endDate = request.endDate,
-            )
-
-        return rentalTripRepository.save(trip)
+        return rentalTripRepository.save(createRentalTripEntity(request))
     }
+
+    private fun createRentalTripEntity(request: RegisterRentalTrip) =
+        RentalTripEntity(
+            rentalId = request.rentalId,
+            startMileage = request.startMileage,
+            endMileage = request.endMileage,
+            startDate = request.startDate,
+            endDate = request.endDate,
+        )
 }

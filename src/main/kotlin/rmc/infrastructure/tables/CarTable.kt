@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 import rmc.domain.entities.BodyType
 import rmc.domain.entities.FuelType
 
-object CarTable : Table() {
+object CarTable : Table("car") {
     val id = integer("id").autoIncrement()
     val fuelType = enumerationByName("fuel_tye", 20, FuelType::class)
     val userId = integer("user_id").references(UserTable.id)

@@ -5,6 +5,7 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import rmc.domain.entities.CarEntity
 import rmc.domain.entities.CarImageEntity
 import rmc.domain.repositories.CarImageRepositoryInterface
@@ -25,13 +26,23 @@ class CarImageRepository() : CarImageRepositoryInterface {
 
     override fun save(carImage: CarImageEntity): CarImageEntity =
         transaction {
-            val id =
-                CarImageTable.insert {
-                    it[carId] = carImage.carId
-                    it[image] = carImage.image
-                    it[weight] = carImage.weight
-                } get CarImageTable.id
+            if (carImage.id == null) {
+                val id =
+                    CarImageTable.insert {
+                        it[carId] = carImage.carId
+                        it[image] = carImage.image
+                        it[weight] = carImage.weight
+                    } get CarImageTable.id
 
-            carImage.copy(id = id)
+                return@transaction carImage.copy(id = id)
+            }
+
+            CarImageTable.update({ CarImageTable.id eq carImage.id }) {
+                it[carId] = carImage.carId
+                it[image] = carImage.image
+                it[weight] = carImage.weight
+            }
+
+            carImage
         }
 }

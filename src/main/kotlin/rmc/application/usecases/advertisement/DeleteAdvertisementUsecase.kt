@@ -1,31 +1,36 @@
 package rmc.application.usecases.advertisement
 
-import rmc.application.exceptions.AdvertisementHasActiveRentalException
 import rmc.application.exceptions.AdvertisementNotFoundException
-import rmc.domain.entities.RentalStatus
+import rmc.application.exceptions.CarNotFoundException
 import rmc.domain.repositories.AdvertisementRepositoryInterface
+import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.RentalRepositoryInterface
 
 class DeleteAdvertisementUsecase(
     private val advertisementRepository: AdvertisementRepositoryInterface,
+    private val carRepository: CarRepositoryInterface,
     private val rentalRepository: RentalRepositoryInterface,
 ) {
-    operator fun invoke(advertisementId: Int) {
+    operator fun invoke(
+        advertisementId: Int,
+        userId: Int,
+    ) {
         val advertisement =
             advertisementRepository.findById(advertisementId)
                 ?: throw AdvertisementNotFoundException("Advertisement with id $advertisementId not found")
 
-        val rentals = rentalRepository.findAllByAdvertisement(advertisement)
+        requireNotNull(advertisement.id) { "Cannot delete advertisement without ID" }
 
-        val hasActiveOrPendingRental =
-            rentals.any {
-                it.rentalStatus == RentalStatus.ACTIVE || it.rentalStatus == RentalStatus.PENDING
-            }
+        val car =
+            carRepository.findById(advertisement.carId)
+                ?: throw CarNotFoundException("Cannot find car with id ${advertisement.carId}")
 
-        if (hasActiveOrPendingRental) {
-            throw AdvertisementHasActiveRentalException("Advertisement has active or pending rentals and cannot be deleted")
-        }
+        car.ensureOwnedBy(userId)
 
-        advertisementRepository.delete(advertisement.id!!)
+        val rentals = rentalRepository.findAllByAdvertisementId(advertisement.id)
+
+        advertisement.canBeDeleted(rentals)
+
+        advertisementRepository.delete(advertisement.id)
     }
 }

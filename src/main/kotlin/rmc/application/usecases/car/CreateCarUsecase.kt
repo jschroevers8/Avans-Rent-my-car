@@ -1,66 +1,74 @@
 package rmc.application.usecases.car
 
-import rmc.application.exceptions.CarAlreadyExistsException
 import rmc.application.exceptions.UserNotFoundException
 import rmc.domain.entities.CarEntity
 import rmc.domain.entities.CarImageEntity
-import rmc.domain.entities.UserType
 import rmc.domain.repositories.CarImageRepositoryInterface
 import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
+import rmc.domain.validatie.ExistingCarValidator
 import rmc.presentation.dto.car.CreateCar
+import rmc.presentation.dto.image.CreateCarImage
+import kotlin.collections.mapIndexed
 
 class CreateCarUsecase(
     private val carRepository: CarRepositoryInterface,
     private val userRepository: UserRepositoryInterface,
+    private val existingCarValidator: ExistingCarValidator,
     private val carImageRepository: CarImageRepositoryInterface,
 ) {
-    operator fun invoke(carRequest: CreateCar): CarEntity {
-        val userId = carRequest.userId
+    operator fun invoke(
+        carRequest: CreateCar,
+        userId: Int,
+    ): CarEntity {
         val user =
             userRepository.findById(userId)
                 ?: throw UserNotFoundException("User with id $userId not found")
 
-        if (user.userType != UserType.CUSTOMER) {
-            throw IllegalAccessException("Only customers can add a car")
-        }
+        user.ensureCustomer()
 
-        carRepository.findByLicensePlate(carRequest.licensePlate)?.let {
-            throw CarAlreadyExistsException("Car with this license plate already exists")
-        }
+        existingCarValidator(carRequest.licensePlate)
 
-        val car =
-            CarEntity(
-                fuelType = carRequest.fuelType,
-                userId = carRequest.userId,
-                bodyType = carRequest.bodyType,
-                brand = carRequest.brand,
-                model = carRequest.model,
-                modelYear = carRequest.modelYear,
-                licensePlate = carRequest.licensePlate,
-                mileage = carRequest.mileage,
-                createdStamp = carRequest.createdStamp,
-            )
+        val carEntity = createCarEntity(carRequest, userId)
 
-        val carTable = carRepository.save(car)
+        return saveCarWithImages(carRepository.save(carEntity), carRequest.carImages)
+    }
 
-        val images = mutableListOf<CarImageEntity>()
+    private fun createCarEntity(
+        request: CreateCar,
+        userId: Int,
+    ): CarEntity =
+        CarEntity(
+            fuelType = request.fuelType,
+            userId = userId,
+            bodyType = request.bodyType,
+            brand = request.brand,
+            model = request.model,
+            modelYear = request.modelYear,
+            licensePlate = request.licensePlate,
+            mileage = request.mileage,
+            createdStamp = request.createdStamp,
+        )
 
-        var weightCounter = 1
+    private fun saveCarWithImages(
+        car: CarEntity,
+        imagesRequest: List<CreateCarImage>,
+    ): CarEntity {
+        requireNotNull(car.id) { "Cannot create car images without car ID" }
 
-        carRequest.carImages.forEach { image ->
-            val carImage =
-                CarImageEntity(
-                    image = image.image,
-                    weight = weightCounter,
-                    carId = carTable.id!!,
+        val images =
+            imagesRequest.mapIndexed { index, imageRequest ->
+                carImageRepository.save(
+                    CarImageEntity(
+                        image = imageRequest.image,
+                        weight = index + 1,
+                        carId = car.id,
+                    ),
                 )
-            images += carImageRepository.save(carImage)
-            weightCounter++
-        }
+            }
 
-        carTable.setImages(images)
+        car.setImages(images)
 
-        return carTable
+        return car
     }
 }

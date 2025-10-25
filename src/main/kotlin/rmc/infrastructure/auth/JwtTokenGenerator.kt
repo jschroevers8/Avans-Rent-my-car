@@ -2,14 +2,14 @@ package rmc.infrastructure.auth
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import rmc.application.auth.TokenGeneratorPort
+import rmc.application.auth.TokenGeneratorInterface
 import java.util.Date
 
 class JwtTokenGenerator(
     private val jwtSecret: String,
     private val jwtAudience: String,
     private val jwtDomain: String,
-) : TokenGeneratorPort {
+) : TokenGeneratorInterface {
     override fun generate(userId: Int): String {
         return JWT.create()
             .withAudience(jwtAudience)

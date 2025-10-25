@@ -7,6 +7,7 @@ import rmc.application.usecases.advertisement.CreateAdvertisementUsecase
 import rmc.application.usecases.advertisement.DeleteAdvertisementUsecase
 import rmc.application.usecases.advertisement.GetAdvertisementUsecase
 import rmc.application.usecases.advertisement.GetAvailableAdvertisementsUsecase
+import rmc.application.usecases.advertisement.UpdateAdvertisementUsecase
 import rmc.application.usecases.car.CreateCarUsecase
 import rmc.application.usecases.car.DeleteCarUsecase
 import rmc.application.usecases.car.GetCarUsecase
@@ -26,6 +27,8 @@ import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.RentalRepositoryInterface
 import rmc.domain.repositories.RentalTripRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
+import rmc.domain.validatie.ExistingCarAdvertisementValidator
+import rmc.domain.validatie.ExistingCarValidator
 import rmc.infrastructure.auth.JwtTokenGenerator
 import rmc.infrastructure.repositories.AddressRepository
 import rmc.infrastructure.repositories.AdvertisementRepository
@@ -38,6 +41,7 @@ import rmc.presentation.routes.advertisement.createAdvertisementRoute
 import rmc.presentation.routes.advertisement.deleteAdvertisementRoute
 import rmc.presentation.routes.advertisement.getAdvertisementRoute
 import rmc.presentation.routes.advertisement.getAvailableAdvertisementsRoute
+import rmc.presentation.routes.advertisement.updateAdvertisementRoute
 import rmc.presentation.routes.car.createCarRoute
 import rmc.presentation.routes.car.deleteCarRoute
 import rmc.presentation.routes.car.getCarRoute
@@ -60,14 +64,17 @@ fun Application.configureRouting() {
     val rentalRepository: RentalRepositoryInterface = RentalRepository()
     val rentalTripRepository: RentalTripRepositoryInterface = RentalTripRepository()
 
+    val existingCarValidator = ExistingCarValidator(carRepository)
+    val existingCarAdvertisementValidator = ExistingCarAdvertisementValidator(advertisementRepository)
+
     val userLoginUsecase = LoginUsecase(userRepository)
     val userSignupUsecase = SignupUsecase(userRepository)
-    val createCarUsecase = CreateCarUsecase(carRepository, userRepository, carImageRepository)
-    val updateCarUsecase = UpdateCarUsecase(carRepository, userRepository, carImageRepository)
+    val createCarUsecase = CreateCarUsecase(carRepository, userRepository, existingCarValidator, carImageRepository)
+    val updateCarUsecase = UpdateCarUsecase(carRepository, existingCarValidator, userRepository, carImageRepository)
     val getCarUsecase = GetCarUsecase(carRepository, carImageRepository)
     val getPersonalCarsUsecase = GetPersonalCarsUsecase(carRepository, carImageRepository)
     val deleteCarUsecase = DeleteCarUsecase(carRepository, carImageRepository, advertisementRepository, rentalRepository)
-    val createAdvertisementUsecase = CreateAdvertisementUsecase(carRepository, advertisementRepository)
+    val createAdvertisementUsecase = CreateAdvertisementUsecase(carRepository, advertisementRepository, existingCarAdvertisementValidator)
     val getAdvertisementUsecase = GetAdvertisementUsecase(advertisementRepository)
     val getAvailableAdvertisementsUsecase = GetAvailableAdvertisementsUsecase(advertisementRepository)
     val rentAdvertisementUsecase = RentAdvertisementUsecase(rentalRepository, userRepository, advertisementRepository)
@@ -75,7 +82,8 @@ fun Application.configureRouting() {
     val getRentalUsecase = GetRentalUsecase(rentalRepository, rentalTripRepository)
     val cancelRentalUsecase = CancelRentalUsecase(rentalRepository)
     val approveRentalUsecase = ApproveRentalUsecase(rentalRepository)
-    val deleteAdvertisementUsecase = DeleteAdvertisementUsecase(advertisementRepository, rentalRepository)
+    val deleteAdvertisementUsecase = DeleteAdvertisementUsecase(advertisementRepository, carRepository, rentalRepository)
+    val updateAdvertisementUsecase = UpdateAdvertisementUsecase(advertisementRepository)
 
     val jwtSecret = environment.config.property("jwt.secret").getString()
     val jwtAudience = environment.config.property("jwt.audience").getString()
@@ -101,5 +109,6 @@ fun Application.configureRouting() {
         cancelRentalRoute(cancelRentalUsecase)
         approveRentalRoute(approveRentalUsecase)
         deleteAdvertisementRoute(deleteAdvertisementUsecase)
+        updateAdvertisementRoute(updateAdvertisementUsecase)
     }
 }

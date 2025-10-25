@@ -14,7 +14,9 @@ class GetCarUsecase(
             carRepository.findById(carId)
                 ?: throw CarNotFoundException("Car with id $carId not found")
 
-        val images = carImageRepository.findByCarId(car.id!!)
+        requireNotNull(car.id) { "Cannot get car without ID" }
+
+        val images = carImageRepository.findByCarId(car.id)
 
         car.setImages(images)
 

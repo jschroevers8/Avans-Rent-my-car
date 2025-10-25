@@ -11,7 +11,7 @@ import rmc.presentation.mappers.toResponse
 
 fun Route.registerRentalTripRoute(registerRentalTripUsecase: RegisterRentalTripUsecase) {
     authenticate("myAuth") {
-        route("/rentalTrip") {
+        route("/rental/trip") {
             post("/register") {
                 val request = call.receive<RegisterRentalTrip>()
 
