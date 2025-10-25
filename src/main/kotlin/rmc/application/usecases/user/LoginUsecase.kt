@@ -1,5 +1,6 @@
 package rmc.application.usecases.user
 
+import org.mindrot.jbcrypt.BCrypt
 import rmc.application.exceptions.InvalidCredentialsException
 import rmc.domain.entities.UserEntity
 import rmc.domain.repositories.UserRepositoryInterface
@@ -15,7 +16,7 @@ class LoginUsecase(
             userRepository.findByEmail(email)
                 ?: throw InvalidCredentialsException("Invalid email or password")
 
-        if (user.password != password) {
+        if (BCrypt.checkpw(password, user.password)) {
             throw InvalidCredentialsException("Invalid email or password")
         }
 
