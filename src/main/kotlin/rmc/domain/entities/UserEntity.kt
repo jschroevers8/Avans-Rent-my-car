@@ -10,4 +10,10 @@ data class UserEntity(
     val lastName: String,
     val phone: String,
     val userPoints: Int,
-)
+) {
+    fun ensureCustomer() {
+        if (this.userType != UserType.CUSTOMER) {
+            throw IllegalAccessException("Only customers can add a car")
+        }
+    }
+}

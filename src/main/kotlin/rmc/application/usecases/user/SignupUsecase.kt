@@ -1,5 +1,6 @@
 package rmc.application.usecases.user
 
+import io.ktor.client.request.request
 import org.mindrot.jbcrypt.BCrypt
 import rmc.application.exceptions.UserAlreadyExistsException
 import rmc.domain.entities.AddressEntity
@@ -15,27 +16,27 @@ class SignupUsecase(
             throw UserAlreadyExistsException("User with email ${userRequest.email} already exists")
         }
 
-        val address =
-            AddressEntity(
-                city = userRequest.address.city,
-                street = userRequest.address.city,
-                houseNumber = userRequest.address.houseNumber,
-                subHouseNumber = userRequest.address.subHouseNumber,
-                postalCode = userRequest.address.postalCode,
-            )
-
-        val user =
-            UserEntity(
-                userType = userRequest.userType,
-                address = address,
-                email = userRequest.email,
-                password = BCrypt.hashpw(userRequest.password, BCrypt.gensalt()),
-                firstName = userRequest.firstName,
-                lastName = userRequest.lastName,
-                phone = userRequest.phone,
-                userPoints = userRequest.userPoints,
-            )
-
-        return userRepository.save(user)
+        return userRepository.save(createUserEntity(userRequest))
     }
+
+    private fun createUserEntity(request: CreateUser) =
+        UserEntity(
+            userType = request.userType,
+            address =
+                with(request.address) {
+                    AddressEntity(
+                        city = city,
+                        street = street,
+                        houseNumber = houseNumber,
+                        subHouseNumber = subHouseNumber,
+                        postalCode = postalCode,
+                    )
+                },
+            email = request.email,
+            password = BCrypt.hashpw(request.password, BCrypt.gensalt()),
+            firstName = request.firstName,
+            lastName = request.lastName,
+            phone = request.phone,
+            userPoints = request.userPoints,
+        )
 }

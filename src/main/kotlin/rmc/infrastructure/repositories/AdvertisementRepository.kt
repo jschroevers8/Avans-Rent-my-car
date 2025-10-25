@@ -23,7 +23,7 @@ class AdvertisementRepository(
                     .where { RentalTable.rentalStatus eq RentalStatus.ACTIVE }
 
             AdvertisementTable
-                .selectAll().where { AdvertisementTable.id inSubQuery activeRentalAds }
+                .selectAll().where { AdvertisementTable.id notInSubQuery activeRentalAds }
                 .map { it.toAdvertisementEntity(addressRepository) }
         }
 
@@ -43,16 +43,28 @@ class AdvertisementRepository(
         transaction {
             val addressId = advertisement.address.let { addressRepository.save(it).id!! }
 
-            val id =
-                AdvertisementTable.insert {
-                    it[carId] = advertisement.carId
-                    it[AdvertisementTable.addressId] = addressId
-                    it[availableFrom] = advertisement.availableFrom
-                    it[availableUntil] = advertisement.availableUntil
-                    it[price] = advertisement.price
-                } get AdvertisementTable.id
+            if (advertisement.id == null) {
+                val id =
+                    AdvertisementTable.insert {
+                        it[carId] = advertisement.carId
+                        it[AdvertisementTable.addressId] = addressId
+                        it[availableFrom] = advertisement.availableFrom
+                        it[availableUntil] = advertisement.availableUntil
+                        it[price] = advertisement.price
+                    } get AdvertisementTable.id
 
-            advertisement.copy(id = id)
+                return@transaction advertisement.copy(id = id)
+            }
+
+            AdvertisementTable.update({ AdvertisementTable.id eq advertisement.id }) {
+                it[carId] = advertisement.carId
+                it[AdvertisementTable.addressId] = addressId
+                it[availableFrom] = advertisement.availableFrom
+                it[availableUntil] = advertisement.availableUntil
+                it[price] = advertisement.price
+            }
+
+            advertisement
         }
 
     override fun delete(id: Int): Boolean =

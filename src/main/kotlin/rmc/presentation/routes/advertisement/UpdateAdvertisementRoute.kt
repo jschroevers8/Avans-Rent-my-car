@@ -16,14 +16,12 @@ fun Route.updateAdvertisementRoute(updateAdvertisementUsecase: UpdateAdvertiseme
     authenticate("myAuth") {
         route("/advertisement") {
             put("/update/{id}") {
-                val id = call.parameters["id"]?.toIntOrNull()
-                if (id == null) {
-                    call.respond(HttpStatusCode.BadRequest, "Invalid advertisement id")
-                    return@put
-                }
+                val advertisementId =
+                    call.parameters["id"]?.toIntOrNull()
+                        ?: return@put call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
 
                 val advertisementRequest = call.receive<UpdateAdvertisement>()
-                val requestWithId = advertisementRequest.copy(carId = id)
+                val requestWithId = advertisementRequest.copy(carId = advertisementId)
 
                 val updatedAdvertisement = updateAdvertisementUsecase(requestWithId)
                 call.respond(HttpStatusCode.OK, updatedAdvertisement.toResponse())

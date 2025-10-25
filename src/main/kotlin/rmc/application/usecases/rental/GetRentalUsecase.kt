@@ -14,7 +14,9 @@ class GetRentalUsecase(
             rentalRepository.findById(rentalId)
                 ?: throw RentalNotFoundException("Rental with id $rentalId not found")
 
-        val trips = rentalTripRepository.findByRentalId(rental.id!!)
+        requireNotNull(rental.id) { "Cannot get rental without ID" }
+
+        val trips = rentalTripRepository.findByRentalId(rental.id)
         rental.setTrips(trips)
 
         return rental

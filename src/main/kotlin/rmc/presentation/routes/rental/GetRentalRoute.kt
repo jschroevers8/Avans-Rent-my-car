@@ -14,12 +14,9 @@ fun Route.getRentalRoute(getRentalUsecase: GetRentalUsecase) {
     authenticate("myAuth") {
         route("/rental") {
             get("/show/{id}") {
-                val rentalId = call.parameters["id"]?.toIntOrNull()
-
-                if (rentalId == null) {
-                    call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
-                    return@get
-                }
+                val rentalId =
+                    call.parameters["id"]?.toIntOrNull()
+                        ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
 
                 val rental = getRentalUsecase(rentalId)
 

@@ -3,10 +3,10 @@ package rmc.infrastructure.repositories
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
-import rmc.domain.entities.AdvertisementEntity
 import rmc.domain.entities.RentalEntity
 import rmc.domain.repositories.RentalRepositoryInterface
 import rmc.infrastructure.mappers.toRentalEntity
+import rmc.infrastructure.tables.CarTable.userId
 import rmc.infrastructure.tables.RentalTable
 
 class RentalRepository : RentalRepositoryInterface {
@@ -17,28 +17,28 @@ class RentalRepository : RentalRepositoryInterface {
                 .singleOrNull()
         }
 
-    override fun findAllByAdvertisement(advertisement: AdvertisementEntity): List<RentalEntity> =
+    override fun findAllByAdvertisementId(advertisementId: Int): List<RentalEntity> =
         transaction {
-            RentalTable.selectAll().where { RentalTable.advertisementId eq advertisement.id!! }
+            RentalTable.selectAll().where { RentalTable.advertisementId eq advertisementId }
                 .map { it.toRentalEntity() }
         }
 
     override fun save(rental: RentalEntity): RentalEntity =
         transaction {
-            val id =
-                RentalTable.insert {
-                    it[userId] = rental.userId
-                    it[advertisementId] = rental.advertisementId
-                    it[rentalStatus] = rental.rentalStatus
-                    it[pickUpDate] = rental.pickUpDate
-                    it[returningDate] = rental.returningDate
-                } get RentalTable.id
-            rental.copy(id = id)
-        }
+            if (rental.id == null) {
+                val id =
+                    RentalTable.insert {
+                        it[userId] = rental.userId
+                        it[advertisementId] = rental.advertisementId
+                        it[rentalStatus] = rental.rentalStatus
+                        it[pickUpDate] = rental.pickUpDate
+                        it[returningDate] = rental.returningDate
+                    } get RentalTable.id
 
-    override fun update(rental: RentalEntity): RentalEntity =
-        transaction {
-            RentalTable.update({ RentalTable.id eq rental.id!! }) {
+                return@transaction rental.copy(id = id)
+            }
+
+            RentalTable.update({ RentalTable.id eq rental.id }) {
                 it[userId] = rental.userId
                 it[advertisementId] = rental.advertisementId
                 it[rentalStatus] = rental.rentalStatus
@@ -47,15 +47,5 @@ class RentalRepository : RentalRepositoryInterface {
             }
 
             rental
-        }
-
-    override fun getAll(): List<RentalEntity> =
-        transaction {
-            RentalTable.selectAll().map { it.toRentalEntity() }
-        }
-
-    override fun delete(id: Int): Boolean =
-        transaction {
-            RentalTable.deleteWhere { RentalTable.id eq id } > 0
         }
 }

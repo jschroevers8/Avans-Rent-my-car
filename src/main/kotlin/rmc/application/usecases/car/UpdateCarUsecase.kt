@@ -1,73 +1,83 @@
 package rmc.application.usecases.car
 
-import rmc.application.exceptions.CarAlreadyExistsException
 import rmc.application.exceptions.CarNotFoundException
 import rmc.application.exceptions.UserNotFoundException
 import rmc.domain.entities.CarEntity
 import rmc.domain.entities.CarImageEntity
-import rmc.domain.entities.UserType
 import rmc.domain.repositories.CarImageRepositoryInterface
 import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
+import rmc.domain.validatie.ExistingCarValidator
 import rmc.presentation.dto.car.UpdateCar
 import rmc.presentation.dto.image.CreateCarImage
 
 class UpdateCarUsecase(
     private val carRepository: CarRepositoryInterface,
+    private val existingCarValidator: ExistingCarValidator,
     private val userRepository: UserRepositoryInterface,
     private val carImageRepository: CarImageRepositoryInterface,
 ) {
-    operator fun invoke(carRequest: UpdateCar): CarEntity {
+    operator fun invoke(
+        carRequest: UpdateCar,
+        userId: Int,
+    ): CarEntity {
         val user =
-            userRepository.findById(carRequest.userId)
-                ?: throw UserNotFoundException("User with id ${carRequest.userId} not found")
+            userRepository.findById(userId)
+                ?: throw UserNotFoundException("User with id $userId not found")
 
-        if (user.userType != UserType.CUSTOMER) {
-            throw IllegalAccessException("Only customers can update a car")
-        }
+        user.ensureCustomer()
 
         val existingCar =
             carRepository.findById(carRequest.id!!)
                 ?: throw CarNotFoundException("Car with id ${carRequest.id} not found")
 
-        carRepository.findByLicensePlate(carRequest.licensePlate)?.let {
-            if (it.id != existingCar.id) {
-                throw CarAlreadyExistsException("Another car with this license plate already exists")
-            }
+        existingCar.ensureOwnedBy(userId)
+        if (existingCar.licensePlate != carRequest.licensePlate) {
+            existingCarValidator(carRequest.licensePlate)
         }
 
-        val updatedCar =
-            existingCar.copy(
-                fuelType = carRequest.fuelType,
-                bodyType = carRequest.bodyType,
-                brand = carRequest.brand,
-                model = carRequest.model,
-                modelYear = carRequest.modelYear,
-                licensePlate = carRequest.licensePlate,
-                mileage = carRequest.mileage,
-            )
+        val carEntity = createCarEntity(existingCar, carRequest)
 
-        val savedCar = carRepository.save(updatedCar)
+        val car = carRepository.save(carEntity)
 
-        carImageRepository.deleteAllByCar(savedCar)
+        return saveCarWithImages(car, carRequest.carImages)
+    }
 
-        val images = carRequest.carImages.toMutableList()
+    private fun createCarEntity(
+        car: CarEntity,
+        request: UpdateCar,
+    ): CarEntity =
+        car.copy(
+            fuelType = request.fuelType,
+            bodyType = request.bodyType,
+            brand = request.brand,
+            model = request.model,
+            modelYear = request.modelYear,
+            licensePlate = request.licensePlate,
+            mileage = request.mileage,
+        )
 
-        images.add(CreateCarImage("extra-image.jpg"))
+    private fun saveCarWithImages(
+        car: CarEntity,
+        imagesRequest: List<CreateCarImage>,
+    ): CarEntity {
+        requireNotNull(car.id) { "Cannot create car images without car ID" }
 
-        val savedImages =
-            images.mapIndexed { index, image ->
-                val carImage =
+        carImageRepository.deleteAllByCar(car)
+
+        val images =
+            imagesRequest.mapIndexed { index, imageRequest ->
+                carImageRepository.save(
                     CarImageEntity(
-                        image = image.image,
+                        image = imageRequest.image,
                         weight = index + 1,
-                        carId = savedCar.id!!,
-                    )
-                carImageRepository.save(carImage)
+                        carId = car.id,
+                    ),
+                )
             }
 
-        savedCar.setImages(savedImages)
+        car.setImages(images)
 
-        return savedCar
+        return car
     }
 }

@@ -12,12 +12,9 @@ import kotlin.text.toIntOrNull
 fun Route.getAdvertisementRoute(getAdvertisementUsecase: GetAdvertisementUsecase) {
     route("/advertisement") {
         get("/show/{id}") {
-            val advertisementId = call.parameters["id"]?.toIntOrNull()
-
-            if (advertisementId == null) {
-                call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
-                return@get
-            }
+            val advertisementId =
+                call.parameters["id"]?.toIntOrNull()
+                    ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
 
             val advertisement = getAdvertisementUsecase(advertisementId)
 

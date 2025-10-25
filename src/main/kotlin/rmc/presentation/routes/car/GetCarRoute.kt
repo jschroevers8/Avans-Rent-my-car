@@ -14,12 +14,9 @@ fun Route.getCarRoute(getCarUsecase: GetCarUsecase) {
     authenticate("myAuth") {
         route("/car") {
             get("/show/{id}") {
-                val carId = call.parameters["id"]?.toIntOrNull()
-
-                if (carId == null) {
-                    call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
-                    return@get
-                }
+                val carId =
+                    call.parameters["id"]?.toIntOrNull()
+                        ?: return@get call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
 
                 val car = getCarUsecase(carId)
 

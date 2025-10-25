@@ -1,54 +1,50 @@
 package rmc.application.usecases.advertisement
 
-import rmc.application.exceptions.AdvertisementAlreadyExistsForCarException
 import rmc.application.exceptions.CarNotFoundException
-import rmc.application.exceptions.UnauthorizedCarAccessException
 import rmc.domain.entities.AddressEntity
 import rmc.domain.entities.AdvertisementEntity
 import rmc.domain.repositories.AdvertisementRepositoryInterface
 import rmc.domain.repositories.CarRepositoryInterface
+import rmc.domain.validatie.ExistingCarAdvertisementValidator
 import rmc.presentation.dto.advertisement.CreateAdvertisement
 
 class CreateAdvertisementUsecase(
     private val carRepository: CarRepositoryInterface,
     private val advertisementRepository: AdvertisementRepositoryInterface,
+    private val existingCarAdvertisementValidator: ExistingCarAdvertisementValidator,
 ) {
     operator fun invoke(
         advertisementRequest: CreateAdvertisement,
         userId: Int,
     ): AdvertisementEntity {
-        val carId = advertisementRequest.carId
         val car =
-            carRepository.findById(carId)
-                ?: throw CarNotFoundException("Advertisement with id $carId not found")
+            carRepository.findById(advertisementRequest.carId)
+                ?: throw CarNotFoundException("Car with id ${advertisementRequest.carId} not found")
 
-        if (car.userId != userId) {
-            throw UnauthorizedCarAccessException("User is not allowed to access this car")
-        }
+        requireNotNull(car.id) { "Cannot create advertisement without Car ID" }
 
-        val existingAdvertisement = advertisementRepository.findOneByCarId(advertisementRequest.carId)
-        if (existingAdvertisement != null) {
-            throw AdvertisementAlreadyExistsForCarException("An advertisement for this car already exists")
-        }
+        car.ensureOwnedBy(userId)
 
-        val address =
-            AddressEntity(
-                city = advertisementRequest.address.city,
-                street = advertisementRequest.address.street,
-                houseNumber = advertisementRequest.address.houseNumber,
-                subHouseNumber = advertisementRequest.address.subHouseNumber,
-                postalCode = advertisementRequest.address.postalCode,
-            )
+        existingCarAdvertisementValidator(car.id)
 
-        val advertisement =
-            AdvertisementEntity(
-                carId = advertisementRequest.carId,
-                address = address,
-                availableFrom = advertisementRequest.availableFrom,
-                availableUntil = advertisementRequest.availableUntil,
-                price = advertisementRequest.price,
-            )
-
-        return advertisementRepository.save(advertisement)
+        return advertisementRepository.save(createAdvertisementEntity(advertisementRequest))
     }
+
+    private fun createAdvertisementEntity(request: CreateAdvertisement) =
+        AdvertisementEntity(
+            carId = request.carId,
+            address =
+                with(request.address) {
+                    AddressEntity(
+                        city = city,
+                        street = street,
+                        houseNumber = houseNumber,
+                        subHouseNumber = subHouseNumber,
+                        postalCode = postalCode,
+                    )
+                },
+            availableFrom = request.availableFrom,
+            availableUntil = request.availableUntil,
+            price = request.price,
+        )
 }

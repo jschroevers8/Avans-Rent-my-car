@@ -9,4 +9,7 @@ data class AdvertisementEntity(
     val availableFrom: LocalDateTime,
     val availableUntil: LocalDateTime,
     val price: Double,
-)
+) {
+    fun canBeDeleted(rentals: List<RentalEntity>): Boolean =
+        rentals.none { it.rentalStatus == RentalStatus.ACTIVE || it.rentalStatus == RentalStatus.PENDING }
+}

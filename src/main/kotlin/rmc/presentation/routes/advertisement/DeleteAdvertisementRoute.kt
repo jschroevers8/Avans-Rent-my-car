@@ -5,24 +5,20 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
-import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import rmc.application.usecases.advertisement.DeleteAdvertisementUsecase
+import rmc.infrastructure.plugins.userId
 import kotlin.text.toIntOrNull
 
 fun Route.deleteAdvertisementRoute(deleteAdvertisementUsecase: DeleteAdvertisementUsecase) {
     authenticate("myAuth") {
         route("/advertisement") {
             delete("/delete/{id}") {
-                val advertisementId = call.parameters["id"]?.toIntOrNull()
+                val advertisementId =
+                    call.parameters["id"]?.toIntOrNull()
+                        ?: return@delete call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
 
-                if (advertisementId == null) {
-                    call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
-
-                    return@delete
-                }
-
-                deleteAdvertisementUsecase(advertisementId)
+                deleteAdvertisementUsecase(advertisementId, call.userId)
 
                 call.respond(HttpStatusCode.NoContent)
             }

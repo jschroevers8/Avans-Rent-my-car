@@ -6,6 +6,7 @@ import io.ktor.server.application.install
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
 import rmc.application.exceptions.*
+import rmc.domain.exceptions.*
 
 fun Application.configureStatusPages() {
     install(StatusPages) {
