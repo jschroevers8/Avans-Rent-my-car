@@ -1,67 +1,48 @@
 package rmc.domain.validations
 
-import kotlinx.datetime.LocalDateTime
-import rmc.domain.entities.AddressEntity
-import rmc.domain.entities.AdvertisementEntity
-import rmc.domain.exceptions.AdvertisementAlreadyExistsForCarException
-import rmc.domain.repositories.AdvertisementRepositoryInterface
+import io.mockk.every
+import io.mockk.mockk
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
+import rmc.domain.repositories.AdvertisementRepositoryInterface
+import rmc.domain.entities.AdvertisementEntity
+import rmc.domain.entities.AddressEntity
+import rmc.domain.exceptions.AdvertisementAlreadyExistsForCarException
+import kotlinx.datetime.LocalDateTime
 
 class ExistingCarAdvertisementValidatorTest {
 
-    class FakeAdvertisementRepository(
-        private val existingCarId: Int? = null
-    ) : AdvertisementRepositoryInterface {
-        override fun getAllAvailable(): List<AdvertisementEntity> {
-            TODO("Not yet implemented")
-        }
-
-        override fun findOneByCarId(carId: Int): AdvertisementEntity? {
-            return if (carId == existingCarId) {
-                AdvertisementEntity(
-                    id = 1,
-                    carId = carId,
-                    address = AddressEntity(
-                        city = "Amsterdam",
-                        street = "Damstraat",
-                        houseNumber = 10,
-                        postalCode = "1012JS"
-                    ),
-                    availableFrom = LocalDateTime(2025, 10, 25, 10, 0),
-                    availableUntil = LocalDateTime(2025,11,5,18,0),
-                    price = 100.0
-                )
-            } else null
-        }
-
-        override fun findById(id: Int): AdvertisementEntity? {
-            TODO("Not yet implemented")
-        }
-
-        override fun save(advertisement: AdvertisementEntity): AdvertisementEntity {
-            TODO("Not yet implemented")
-        }
-
-        override fun delete(id: Int): Boolean {
-            TODO("Not yet implemented")
-        }
-    }
-
     @Test
     fun `does not throw when no existing advertisement for car`() {
-        val repository = FakeAdvertisementRepository() // geen bestaande advertentie
+        val repository = mockk<AdvertisementRepositoryInterface>()
+        every { repository.findOneByCarId(42) } returns null
+
         val validator = ExistingCarAdvertisementValidator(repository)
 
-        // should not throw
-        validator.invoke(42)
+        validator.invoke(42) // should not throw
         assertTrue(true) // bevestigt dat het is uitgevoerd zonder exception
     }
 
     @Test
     fun `throws AdvertisementAlreadyExistsForCarException when advertisement exists`() {
-        val repository = FakeAdvertisementRepository(existingCarId = 42)
+        val repository = mockk<AdvertisementRepositoryInterface>()
+        val existingAd = AdvertisementEntity(
+            id = 1,
+            carId = 42,
+            address = AddressEntity(
+                city = "Amsterdam",
+                street = "Damstraat",
+                houseNumber = 10,
+                postalCode = "1012JS"
+            ),
+            availableFrom = LocalDateTime(2025,10,25,10,0),
+            availableUntil = LocalDateTime(2025,11,5,18,0),
+            price = 100.0
+        )
+
+        every { repository.findOneByCarId(42) } returns existingAd
+
         val validator = ExistingCarAdvertisementValidator(repository)
 
         assertFailsWith<AdvertisementAlreadyExistsForCarException> {
