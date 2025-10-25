@@ -5,6 +5,7 @@ import rmc.domain.entities.AddressEntity
 import rmc.domain.entities.UserEntity
 import rmc.domain.repositories.UserRepositoryInterface
 import rmc.presentation.dto.user.CreateUser
+import org.mindrot.jbcrypt.BCrypt
 
 class SignupUsecase(
     private val userRepository: UserRepositoryInterface,
@@ -28,7 +29,7 @@ class SignupUsecase(
                 userType = userRequest.userType,
                 address = address,
                 email = userRequest.email,
-                password = userRequest.password,
+                password = BCrypt.hashpw(userRequest.password, BCrypt.gensalt()),
                 firstName = userRequest.firstName,
                 lastName = userRequest.lastName,
                 phone = userRequest.phone,
