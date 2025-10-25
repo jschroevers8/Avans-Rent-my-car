@@ -10,7 +10,6 @@
 ## Features
 
 
-
 ### For Car Owners
 - Register cars with details such as brand, model, year, license plate, body type, and photos.
 - Create advertisements including price, availability, location, and photos.
