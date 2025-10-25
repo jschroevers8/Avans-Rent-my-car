@@ -3,7 +3,7 @@ package rmc.infrastructure.tables
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
-object AdvertisementTable : Table() {
+object AdvertisementTable : Table("advertisement") {
     val id = integer("id").autoIncrement()
     val carId = integer("car_id").references(CarTable.id)
     val addressId = integer("address_id").references(AddressTable.id)

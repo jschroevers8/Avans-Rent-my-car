@@ -1,6 +1,7 @@
 package rmc.domain.entities
 
 import kotlinx.datetime.LocalDateTime
+import rmc.domain.exceptions.UnauthorizedCarAccessException
 
 data class CarEntity(
     val id: Int? = null,
@@ -17,5 +18,11 @@ data class CarEntity(
 ) {
     fun setImages(carImages: List<CarImageEntity>) {
         this.carImages = carImages
+    }
+
+    fun ensureOwnedBy(userId: Int) {
+        if (this.userId != userId) {
+            throw UnauthorizedCarAccessException("User $userId is not the owner of car $id")
+        }
     }
 }

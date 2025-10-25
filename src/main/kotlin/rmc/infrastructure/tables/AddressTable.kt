@@ -2,7 +2,7 @@ package rmc.infrastructure.tables
 
 import org.jetbrains.exposed.sql.Table
 
-object AddressTable : Table() {
+object AddressTable : Table("address") {
     val id = integer("id").autoIncrement()
     val city = varchar("city", 50)
     val street = varchar("street", 100)

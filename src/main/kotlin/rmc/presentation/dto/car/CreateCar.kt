@@ -9,7 +9,6 @@ import rmc.presentation.dto.image.CreateCarImage
 @Serializable
 data class CreateCar(
     val fuelType: FuelType,
-    val userId: Int,
     val bodyType: BodyType,
     val brand: String,
     val model: String,

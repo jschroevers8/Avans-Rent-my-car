@@ -10,7 +10,6 @@ import rmc.presentation.dto.image.CreateCarImage
 data class UpdateCar(
     val id: Int? = null,
     val fuelType: FuelType,
-    val userId: Int,
     val bodyType: BodyType,
     val brand: String,
     val model: String,

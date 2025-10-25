@@ -8,14 +8,14 @@ import io.ktor.server.routing.post
 import kotlinx.serialization.json.Json
 import rmc.application.auth.Authenticator
 import rmc.application.usecases.user.LoginUsecase
-import rmc.presentation.dto.user.LoginRequestDTO
+import rmc.presentation.dto.user.LoginRequest
 
 fun Route.userLoginRoute(
     loginUsecase: LoginUsecase,
     authenticator: Authenticator,
 ) {
     post("/login") {
-        val request = call.receive<LoginRequestDTO>()
+        val request = call.receive<LoginRequest>()
         val user = loginUsecase(request.email, request.password)
 
         val token = authenticator.generateToken(user)

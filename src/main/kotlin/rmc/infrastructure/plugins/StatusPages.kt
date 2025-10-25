@@ -6,6 +6,7 @@ import io.ktor.server.application.install
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
 import rmc.application.exceptions.*
+import rmc.domain.exceptions.*
 
 fun Application.configureStatusPages() {
     install(StatusPages) {
@@ -27,6 +28,10 @@ fun Application.configureStatusPages() {
 
         exception<CarHasActiveRentalException> { call, cause ->
             call.respond(HttpStatusCode.Conflict, mapOf("error" to cause.message))
+        }
+
+        exception<InvalidUserException> { call, cause ->
+            call.respond(HttpStatusCode.BadRequest, cause.message ?: "Invalid user")
         }
 
         exception<UserNotFoundException> { call, cause ->

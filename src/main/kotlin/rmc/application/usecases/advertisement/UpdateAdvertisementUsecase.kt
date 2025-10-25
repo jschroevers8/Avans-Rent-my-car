@@ -11,30 +11,30 @@ class UpdateAdvertisementUsecase(
 ) {
     operator fun invoke(advertisementRequest: UpdateAdvertisement): AdvertisementEntity {
         val advId = advertisementRequest.carId
-        val foundAdvertisement = advertisementRepository.findOneByCarId(advId)
+        val foundAdvertisement =
+            advertisementRepository.findOneByCarId(advId)
+                ?: throw AdvertisementNotFoundException("Advertisement with id $advId not found")
 
-        if (foundAdvertisement == null) {
-            throw AdvertisementNotFoundException("Advertisement with id $advId not found")
-        }
-
-        val address =
-            AddressEntity(
-                city = advertisementRequest.address.city,
-                street = advertisementRequest.address.street,
-                houseNumber = advertisementRequest.address.houseNumber,
-                subHouseNumber = advertisementRequest.address.subHouseNumber,
-                postalCode = advertisementRequest.address.postalCode,
-            )
-
-        val advertisement =
-            AdvertisementEntity(
-                carId = foundAdvertisement.carId,
-                address = address,
-                availableFrom = advertisementRequest.availableFrom,
-                availableUntil = advertisementRequest.availableUntil,
-                price = advertisementRequest.price,
-            )
-
-        return advertisementRepository.save(advertisement)
+        return advertisementRepository.save(createAdvertisementEntity(advertisementRequest, foundAdvertisement))
     }
+
+    private fun createAdvertisementEntity(
+        request: UpdateAdvertisement,
+        foundAdvertisement: AdvertisementEntity,
+    ) = AdvertisementEntity(
+        carId = foundAdvertisement.carId,
+        address =
+            with(request.address) {
+                AddressEntity(
+                    city = city,
+                    street = street,
+                    houseNumber = houseNumber,
+                    subHouseNumber = subHouseNumber,
+                    postalCode = postalCode,
+                )
+            },
+        availableFrom = request.availableFrom,
+        availableUntil = request.availableUntil,
+        price = request.price,
+    )
 }

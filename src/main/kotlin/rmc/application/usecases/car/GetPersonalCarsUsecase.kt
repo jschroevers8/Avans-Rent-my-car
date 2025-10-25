@@ -12,7 +12,10 @@ class GetPersonalCarsUsecase(
         val cars = carRepository.getAllCarsByUserId(userId)
 
         for (car in cars) {
-            val images = carImageRepository.findByCarId(car.id!!)
+            requireNotNull(car.id) { "Cannot get car without ID" }
+
+            val images = carImageRepository.findByCarId(car.id)
+
             car.setImages(images)
         }
 

@@ -29,18 +29,33 @@ class UserRepository(
         transaction {
             val addressId = user.address.let { addressRepository.save(it).id!! }
 
-            val id =
-                UserTable.insert {
-                    it[userType] = user.userType
-                    it[UserTable.addressId] = addressId
-                    it[email] = user.email
-                    it[password] = user.password
-                    it[firstName] = user.firstName
-                    it[lastName] = user.lastName
-                    it[phone] = user.phone
-                    it[userPoints] = user.userPoints
-                } get UserTable.id
+            if (user.id == null) {
+                val id =
+                    UserTable.insert {
+                        it[userType] = user.userType
+                        it[UserTable.addressId] = addressId
+                        it[email] = user.email
+                        it[password] = user.password
+                        it[firstName] = user.firstName
+                        it[lastName] = user.lastName
+                        it[phone] = user.phone
+                        it[userPoints] = user.userPoints
+                    } get UserTable.id
 
-            user.copy(id = id)
+                return@transaction user.copy(id = id)
+            }
+
+            UserTable.update({ UserTable.id eq user.id }) {
+                it[userType] = user.userType
+                it[UserTable.addressId] = addressId
+                it[email] = user.email
+                it[password] = user.password
+                it[firstName] = user.firstName
+                it[lastName] = user.lastName
+                it[phone] = user.phone
+                it[userPoints] = user.userPoints
+            }
+
+            user
         }
 }

@@ -15,12 +15,9 @@ fun Route.cancelRentalRoute(cancelRentalUsecase: CancelRentalUsecase) {
     authenticate("myAuth") {
         route("/rental") {
             post("/cancel/{id}") {
-                val rentalId = call.parameters["id"]?.toIntOrNull()
-
-                if (rentalId == null) {
-                    call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
-                    return@post
-                }
+                val rentalId =
+                    call.parameters["id"]?.toIntOrNull()
+                        ?: return@post call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
 
                 val rental = cancelRentalUsecase(rentalId)
 

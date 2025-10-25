@@ -1,6 +1,8 @@
 package rmc.domain.entities
 
 import kotlinx.datetime.LocalDateTime
+import rmc.domain.exceptions.RentalCannotBeCancelledException
+import rmc.domain.exceptions.RentalNotPendingException
 
 data class RentalEntity(
     val id: Int? = null,
@@ -13,5 +15,17 @@ data class RentalEntity(
 ) {
     fun setTrips(rentalTrips: List<RentalTripEntity>) {
         this.rentalTrips = rentalTrips
+    }
+
+    fun ensureStatusPending() {
+        if (this.rentalStatus != RentalStatus.PENDING) {
+            throw RentalNotPendingException("Rental with id ${this.id} is not pending and cannot be approved")
+        }
+    }
+
+    fun ensureStatusNotActiveOrCompleted() {
+        if (this.rentalStatus == RentalStatus.ACTIVE || this.rentalStatus == RentalStatus.COMPLETED) {
+            throw RentalCannotBeCancelledException("Rental with id  ${this.id} cannot be cancelled because it is ${this.rentalStatus}")
+        }
     }
 }

@@ -1,5 +1,5 @@
 package rmc.application.auth
 
-interface TokenGeneratorPort {
+interface TokenGeneratorInterface {
     fun generate(userId: Int): String
 }

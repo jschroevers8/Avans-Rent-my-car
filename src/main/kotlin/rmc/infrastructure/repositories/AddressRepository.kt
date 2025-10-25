@@ -18,15 +18,27 @@ class AddressRepository : AddressRepositoryInterface {
 
     override fun save(address: AddressEntity): AddressEntity =
         transaction {
-            val id =
-                AddressTable.insert {
-                    it[city] = address.city
-                    it[street] = address.street
-                    it[houseNumber] = address.houseNumber
-                    it[subHouseNumber] = address.subHouseNumber
-                    it[postalCode] = address.postalCode
-                } get AddressTable.id
+            if (address.id == null) {
+                val id =
+                    AddressTable.insert {
+                        it[city] = address.city
+                        it[street] = address.street
+                        it[houseNumber] = address.houseNumber
+                        it[subHouseNumber] = address.subHouseNumber
+                        it[postalCode] = address.postalCode
+                    } get AddressTable.id
 
-            address.copy(id = id)
+                return@transaction address.copy(id = id)
+            }
+
+            AddressTable.update({ AddressTable.id eq address.id }) {
+                it[city] = address.city
+                it[street] = address.street
+                it[houseNumber] = address.houseNumber
+                it[subHouseNumber] = address.subHouseNumber
+                it[postalCode] = address.postalCode
+            }
+
+            address
         }
 }

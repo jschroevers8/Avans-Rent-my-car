@@ -15,12 +15,9 @@ fun Route.approveRentalRoute(approveRentalUsecase: ApproveRentalUsecase) {
     authenticate("myAuth") {
         route("/rental") {
             post("/approve/{id}") {
-                val rentalId = call.parameters["id"]?.toIntOrNull()
-
-                if (rentalId == null) {
-                    call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
-                    return@post
-                }
+                val rentalId =
+                    call.parameters["id"]?.toIntOrNull()
+                        ?: return@post call.respond(HttpStatusCode.BadRequest, "Invalid or missing id parameter")
 
                 val rental = approveRentalUsecase(rentalId)
 

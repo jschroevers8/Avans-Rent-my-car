@@ -16,7 +16,7 @@ class LoginUsecase(
             userRepository.findByEmail(email)
                 ?: throw InvalidCredentialsException("Invalid email or password")
 
-        if (BCrypt.checkpw(password, user.password)) {
+        if (!BCrypt.checkpw(password, user.password)) {
             throw InvalidCredentialsException("Invalid email or password")
         }
 
