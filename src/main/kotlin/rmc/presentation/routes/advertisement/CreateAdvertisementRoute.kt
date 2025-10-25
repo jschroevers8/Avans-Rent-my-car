@@ -1,7 +1,6 @@
 package rmc.presentation.routes.advertisement
 
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -13,15 +12,13 @@ import rmc.presentation.dto.advertisement.CreateAdvertisement
 import rmc.presentation.mappers.toResponse
 
 fun Route.createAdvertisementRoute(createAdvertisementUsecase: CreateAdvertisementUsecase) {
-    authenticate("myAuth") {
-        route("/advertisement") {
-            post("/create") {
-                val request = call.receive<CreateAdvertisement>()
+    route("/advertisement") {
+        post("/create") {
+            val request = call.receive<CreateAdvertisement>()
 
-                val created = createAdvertisementUsecase(request, call.userId)
+            val created = createAdvertisementUsecase(request, call.userId)
 
-                call.respond(HttpStatusCode.Created, created.toResponse())
-            }
+            call.respond(HttpStatusCode.Created, created.toResponse())
         }
     }
 }
