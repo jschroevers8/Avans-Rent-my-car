@@ -1,6 +1,7 @@
 package rmc.infrastructure.plugins
 
 import io.ktor.server.application.*
+import io.ktor.server.auth.authenticate
 import io.ktor.server.routing.routing
 import rmc.application.auth.Authenticator
 import rmc.application.usecases.advertisement.CreateAdvertisementUsecase
@@ -90,20 +91,23 @@ fun Application.configureRouting() {
     routing {
         userLoginRoute(userLoginUsecase, authenticator)
         userSignupRoute(userSignupUsecase)
-        createCarRoute(createCarUsecase)
-        updateCarRoute(updateCarUsecase)
-        getCarRoute(getCarUsecase)
-        getPersonalCarsRoute(getPersonalCarsUsecase)
-        deleteCarRoute(deleteCarUsecase)
-        createAdvertisementRoute(createAdvertisementUsecase)
         getAdvertisementRoute(getAdvertisementUsecase)
         getAvailableAdvertisementsRoute(getAvailableAdvertisementsUsecase)
-        rentAdvertisementRoute(rentAdvertisementUsecase)
-        registerRentalTripRoute(registerRentalTripUsecase)
-        getRentalRoute(getRentalUsecase)
-        cancelRentalRoute(cancelRentalUsecase)
-        approveRentalRoute(approveRentalUsecase)
-        deleteAdvertisementRoute(deleteAdvertisementUsecase)
-        updateAdvertisementRoute(updateAdvertisementUsecase)
+
+        authenticate("myAuth") {
+            createCarRoute(createCarUsecase)
+            updateCarRoute(updateCarUsecase)
+            getCarRoute(getCarUsecase)
+            getPersonalCarsRoute(getPersonalCarsUsecase)
+            deleteCarRoute(deleteCarUsecase)
+            createAdvertisementRoute(createAdvertisementUsecase)
+            rentAdvertisementRoute(rentAdvertisementUsecase)
+            registerRentalTripRoute(registerRentalTripUsecase)
+            getRentalRoute(getRentalUsecase)
+            cancelRentalRoute(cancelRentalUsecase)
+            approveRentalRoute(approveRentalUsecase)
+            deleteAdvertisementRoute(deleteAdvertisementUsecase)
+            updateAdvertisementRoute(updateAdvertisementUsecase)
+        }
     }
 }
