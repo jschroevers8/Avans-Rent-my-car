@@ -6,20 +6,20 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class RentalTripEntityTest {
-
     @Test
     fun `can create RentalTripEntity with all fields`() {
         val startDate = LocalDateTime(2025, 10, 25, 10, 0)
         val endDate = LocalDateTime(2025, 10, 30, 18, 0)
 
-        val trip = RentalTripEntity(
-            id = 1,
-            rentalId = 123,
-            startMileage = 1000,
-            endMileage = 1500,
-            startDate = startDate,
-            endDate = endDate
-        )
+        val trip =
+            RentalTripEntity(
+                id = 1,
+                rentalId = 123,
+                startMileage = 1000,
+                endMileage = 1500,
+                startDate = startDate,
+                endDate = endDate,
+            )
 
         assertEquals(1, trip.id)
         assertEquals(123, trip.rentalId)
@@ -34,13 +34,14 @@ class RentalTripEntityTest {
         val startDate = LocalDateTime(2025, 10, 25, 10, 0)
         val endDate = LocalDateTime(2025, 10, 30, 18, 0)
 
-        val trip = RentalTripEntity(
-            rentalId = 456,
-            startMileage = 2000,
-            endMileage = 2500,
-            startDate = startDate,
-            endDate = endDate
-        )
+        val trip =
+            RentalTripEntity(
+                rentalId = 456,
+                startMileage = 2000,
+                endMileage = 2500,
+                startDate = startDate,
+                endDate = endDate,
+            )
 
         assertNull(trip.id)
         assertEquals(456, trip.rentalId)
