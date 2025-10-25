@@ -28,8 +28,8 @@ import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.RentalRepositoryInterface
 import rmc.domain.repositories.RentalTripRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
-import rmc.domain.validatie.ExistingCarAdvertisementValidator
-import rmc.domain.validatie.ExistingCarValidator
+import rmc.domain.validations.ExistingCarAdvertisementValidator
+import rmc.domain.validations.ExistingCarValidator
 import rmc.infrastructure.auth.JwtTokenGenerator
 import rmc.infrastructure.repositories.AddressRepository
 import rmc.infrastructure.repositories.AdvertisementRepository

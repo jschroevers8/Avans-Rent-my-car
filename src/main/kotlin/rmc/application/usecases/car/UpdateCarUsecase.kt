@@ -7,7 +7,7 @@ import rmc.domain.entities.CarImageEntity
 import rmc.domain.repositories.CarImageRepositoryInterface
 import rmc.domain.repositories.CarRepositoryInterface
 import rmc.domain.repositories.UserRepositoryInterface
-import rmc.domain.validatie.ExistingCarValidator
+import rmc.domain.validations.ExistingCarValidator
 import rmc.presentation.dto.car.UpdateCar
 import rmc.presentation.dto.image.CreateCarImage
 

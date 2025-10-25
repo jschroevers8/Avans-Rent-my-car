@@ -5,7 +5,7 @@ import rmc.domain.entities.AddressEntity
 import rmc.domain.entities.AdvertisementEntity
 import rmc.domain.repositories.AdvertisementRepositoryInterface
 import rmc.domain.repositories.CarRepositoryInterface
-import rmc.domain.validatie.ExistingCarAdvertisementValidator
+import rmc.domain.validations.ExistingCarAdvertisementValidator
 import rmc.presentation.dto.advertisement.CreateAdvertisement
 
 class CreateAdvertisementUsecase(

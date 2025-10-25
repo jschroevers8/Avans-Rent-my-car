@@ -3,21 +3,22 @@ package rmc.application.usecases.user
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
+import org.mindrot.jbcrypt.BCrypt
 import rmc.application.exceptions.InvalidCredentialsException
 import rmc.domain.entities.AddressEntity
 import rmc.domain.entities.UserEntity
 import rmc.domain.entities.UserType
 import rmc.domain.repositories.UserRepositoryInterface
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class LoginUsecaseTest {
     private lateinit var userRepository: UserRepositoryInterface
     private lateinit var loginUsecase: LoginUsecase
 
-    @BeforeEach
+    @BeforeTest
     fun setUp() {
         userRepository = mockk()
         loginUsecase = LoginUsecase(userRepository)
@@ -34,11 +35,13 @@ class LoginUsecaseTest {
                 subHouseNumber = "foo",
             )
 
+        val hashedPassword = BCrypt.hashpw("password123", BCrypt.gensalt())
+
         val user =
             UserEntity(
                 id = 1,
                 email = "test@example.com",
-                password = "password123",
+                password = hashedPassword,
                 userType = UserType.CUSTOMER,
                 address = address,
                 firstName = "test",
@@ -60,7 +63,7 @@ class LoginUsecaseTest {
         every { userRepository.findByEmail("wrong@example.com") } returns null
 
         val exception =
-            assertThrows(InvalidCredentialsException::class.java) {
+            assertFailsWith<InvalidCredentialsException> {
                 loginUsecase("wrong@example.com", "password123")
             }
 
@@ -78,11 +81,13 @@ class LoginUsecaseTest {
                 subHouseNumber = "foo",
             )
 
+        val hashedPassword = BCrypt.hashpw("password123", BCrypt.gensalt())
+
         val user =
             UserEntity(
                 id = 1,
                 email = "test@example.com",
-                password = "password123",
+                password = hashedPassword,
                 userType = UserType.CUSTOMER,
                 address = address,
                 firstName = "test",
@@ -94,7 +99,7 @@ class LoginUsecaseTest {
         every { userRepository.findByEmail("test@example.com") } returns user
 
         val exception =
-            assertThrows(InvalidCredentialsException::class.java) {
+            assertFailsWith<InvalidCredentialsException> {
                 loginUsecase("test@example.com", "wrongpassword")
             }
 

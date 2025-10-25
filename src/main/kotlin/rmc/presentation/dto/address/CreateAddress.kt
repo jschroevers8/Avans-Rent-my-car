@@ -7,6 +7,6 @@ data class CreateAddress(
     val city: String,
     val street: String,
     val houseNumber: Int,
-    val subHouseNumber: String,
+    val subHouseNumber: String?,
     val postalCode: String,
 )

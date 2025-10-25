@@ -33,5 +33,5 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Build and test with Gradle
-        run: ./gradlew clean test
+      - name: Build and run Kotlin tests with Gradle
+        run: ./gradlew clean test --tests "*"
