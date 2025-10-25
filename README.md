@@ -76,12 +76,13 @@ rent-my-car/
 │   │   │   └── rmc/
 │   │   │       ├── domain/                  # Domain layer
 │   │   │       │   ├── entities/            # Domain entities
-│   │   │       │   └── repositories/        # Repository interfaces
+│   │   │       │   ├── exceptions/          # Custom exceptions
+│   │   │       │   ├── repositories/        # Repository interfaces
+│   │   │       │   └── validations/         # Validate business logic that can be validated in domain entity
 │   │   │       ├── application/             # Application layer
 │   │   │       │   ├── auth/                # Authentication / security
 │   │   │       │   ├── exceptions/          # Custom exceptions
 │   │   │       │   ├── usecases/            # Application use cases
-│   │   │       │   └── repositories/        # Application repository interfaces
 │   │   │       ├── infrastructure/          # Infrastructure layer
 │   │   │       │   ├── auth/                # Authentication implementations
 │   │   │       │   ├── mappers/             # DTO / Entity mappers
