@@ -1,5 +1,6 @@
 package rmc.application.usecases.user
 
+import org.mindrot.jbcrypt.BCrypt
 import rmc.application.exceptions.UserAlreadyExistsException
 import rmc.domain.entities.AddressEntity
 import rmc.domain.entities.UserEntity
@@ -28,7 +29,7 @@ class SignupUsecase(
                 userType = userRequest.userType,
                 address = address,
                 email = userRequest.email,
-                password = userRequest.password,
+                password = BCrypt.hashpw(userRequest.password, BCrypt.gensalt()),
                 firstName = userRequest.firstName,
                 lastName = userRequest.lastName,
                 phone = userRequest.phone,

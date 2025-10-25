@@ -7,6 +7,7 @@ import rmc.application.usecases.advertisement.CreateAdvertisementUsecase
 import rmc.application.usecases.advertisement.DeleteAdvertisementUsecase
 import rmc.application.usecases.advertisement.GetAdvertisementUsecase
 import rmc.application.usecases.advertisement.GetAvailableAdvertisementsUsecase
+import rmc.application.usecases.advertisement.UpdateAdvertisementUsecase
 import rmc.application.usecases.car.CreateCarUsecase
 import rmc.application.usecases.car.DeleteCarUsecase
 import rmc.application.usecases.car.GetCarUsecase
@@ -38,6 +39,7 @@ import rmc.presentation.routes.advertisement.createAdvertisementRoute
 import rmc.presentation.routes.advertisement.deleteAdvertisementRoute
 import rmc.presentation.routes.advertisement.getAdvertisementRoute
 import rmc.presentation.routes.advertisement.getAvailableAdvertisementsRoute
+import rmc.presentation.routes.advertisement.updateAdvertisementRoute
 import rmc.presentation.routes.car.createCarRoute
 import rmc.presentation.routes.car.deleteCarRoute
 import rmc.presentation.routes.car.getCarRoute
@@ -76,6 +78,7 @@ fun Application.configureRouting() {
     val cancelRentalUsecase = CancelRentalUsecase(rentalRepository)
     val approveRentalUsecase = ApproveRentalUsecase(rentalRepository)
     val deleteAdvertisementUsecase = DeleteAdvertisementUsecase(advertisementRepository, rentalRepository)
+    val updateAdvertisementUsecase = UpdateAdvertisementUsecase(advertisementRepository)
 
     val jwtSecret = environment.config.property("jwt.secret").getString()
     val jwtAudience = environment.config.property("jwt.audience").getString()
@@ -101,5 +104,6 @@ fun Application.configureRouting() {
         cancelRentalRoute(cancelRentalUsecase)
         approveRentalRoute(approveRentalUsecase)
         deleteAdvertisementRoute(deleteAdvertisementUsecase)
+        updateAdvertisementRoute(updateAdvertisementUsecase)
     }
 }
