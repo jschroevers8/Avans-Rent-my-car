@@ -1,7 +1,7 @@
 ### Create a new car
 POST http://localhost:8080/car/create
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjE0NzM3NDh9.M3YtNd8J0V4j0yzZe86YypNkNEthPkpJaft6F6Zimcw
+Authorization: Bearer {{ token.token }}
 
 {
   "fuelType": "ICE",
@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllb
   "brand": "Toyota",
   "modelYear": "2022",
   "model": "Supra",
-  "licensePlate": "KTR-123-B",
+  "licensePlate": "KTR-123-Y",
   "mileage": "34000",
   "createdStamp": "2020-08-30T18:43",
   "carImages": [
@@ -23,9 +23,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllb
 }
 
 ### Update existing car
-PUT http://localhost:8080/car/update/1
+PUT http://localhost:8080/car/update/3
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjE0NzM3NDh9.M3YtNd8J0V4j0yzZe86YypNkNEthPkpJaft6F6Zimcw
+Authorization: Bearer {{ token.token }}
 
 {
   "fuelType": "ICE",
@@ -33,7 +33,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllb
   "brand": "Toyota",
   "modelYear": "2023",
   "model": "Supra",
-  "licensePlate": "KTR-123-A",
+  "licensePlate": "KTR-123-B",
   "mileage": "34500",
   "createdStamp": "2025-10-23T10:00:00",
   "carImages": [

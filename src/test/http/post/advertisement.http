@@ -1,10 +1,10 @@
 ### Create a new car
 POST http://localhost:8080/advertisement/create
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjE0NzM3NDh9.M3YtNd8J0V4j0yzZe86YypNkNEthPkpJaft6F6Zimcw
+Authorization: Bearer {{ token.token }}
 
 {
-  "carId": 1,
+  "carId": 5,
   "address": {
     "street": "1234 Main Street",
     "city": "Amsterdam",

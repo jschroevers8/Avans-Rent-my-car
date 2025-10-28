@@ -1,10 +1,10 @@
 ### Get car by ID
-GET http://localhost:8080/car/show/21
+GET http://localhost:8080/car/show/5
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjExNDcyNzF9.yxv45vaZq3UGkwSHy8HEXCKhfkexAt4z3Eaw-koU3hw
+Authorization: Bearer {{ token.token }}
 
 ### Get car personal cars
 GET http://localhost:8080/personal/cars
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteUF1ZGllbmNlIiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3QvIiwidXNlcklkIjoxLCJleHAiOjE3NjExNDcyNzF9.yxv45vaZq3UGkwSHy8HEXCKhfkexAt4z3Eaw-koU3hw
+Authorization: Bearer {{ token.token }}
 
